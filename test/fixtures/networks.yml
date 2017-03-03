@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  post_code: 1
+  name: MyString
+  users_count: 1
+
+two:
+  post_code: 1
+  name: MyString
+  users_count: 1

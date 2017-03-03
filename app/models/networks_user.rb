@@ -1,0 +1,2 @@
+class NetworksUser < ApplicationRecord
+end
