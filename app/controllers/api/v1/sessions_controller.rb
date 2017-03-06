@@ -5,15 +5,15 @@ class Api::V1::SessionsController < ApplicationController
 
   def create
     user_password = params[:user][:password]
-    user_phone = params[:user][:phone]
-    user = user_phone.present? && User.find_by(phone: user_phone)
+    user_login = params[:user][:login]
+    user = user_login.present? && User.where('email = ? OR phone = ?', user_login, user_login).first
     if user && user.valid_password?(user_password)
       sign_in user, store: false
       user.generate_authentication_token!
       user.save
       render json: user, status: 200
     else
-      render json: { errors: 'Invalid phone or password' }, status: 422
+      render json: { errors: 'Invalid login or password' }, status: 422
     end
   end
 

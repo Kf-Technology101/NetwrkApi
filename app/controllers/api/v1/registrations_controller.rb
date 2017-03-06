@@ -20,6 +20,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :last_name,
                                  :email,
                                  :password,
-                                 :phone)
+                                 :phone,
+                                 :date_of_birthday)
   end
 end
