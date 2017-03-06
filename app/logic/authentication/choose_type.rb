@@ -2,20 +2,20 @@ class ChooseType
   def self.start(login, country_code)
     if ValidateEmail.valid?(login)
       type = {
-        type: 'email',
-        message: 'Confirmation email is already sent',
-        code: '1234'
+        login_type: 'email',
+        login_message: 'Confirmation email is already sent',
+        login_code: '1234'
       }
       # TODO email sending
     elsif Phonelib.valid_for_country?(login, country_code)
       type = {
-        type: 'email',
-        message: 'Confirmation SMS is already sent',
-        code: '1234'
+        login_type: 'phone',
+        login_message: 'Confirmation SMS is already sent',
+        login_code: '1234'
       }
       # TODO sms sending
     else
-      type = {type: 'error', message: 'Your login is incorrect'}
+      type = {login_type: 'error', login_message: 'Your login is incorrect'}
     end
   end
 end
