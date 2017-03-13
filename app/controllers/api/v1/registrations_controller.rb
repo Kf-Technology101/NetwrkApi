@@ -13,6 +13,17 @@ class Api::V1::RegistrationsController < ApplicationController
     end
   end
 
+  def update
+    resource = User.find_by_id(params[:id])
+    resource.update(user_params)
+    if resource.valid?
+      resource.save
+      render json: resource, status: 200
+    else
+      render json: resource.errors.messages, status: 422
+    end
+  end
+
   private
 
   def user_params
