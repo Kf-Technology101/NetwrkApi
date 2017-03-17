@@ -13,5 +13,7 @@ module BKServer
     # -- all .rb files in that directory are automatically loaded.
     config.autoload_paths << "#{Rails.root}/app/logic/twilio"
     config.autoload_paths << "#{Rails.root}/app/logic/authentication"
+    config.autoload_paths << "#{Rails.root}/app/logic/facebook"
+    config.autoload_paths << "#{Rails.root}/app/logic/twitter"
   end
 end
