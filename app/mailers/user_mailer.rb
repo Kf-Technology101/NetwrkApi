@@ -4,4 +4,10 @@ class UserMailer < ApplicationMailer
     @email = email
     mail(to: @email, subject: 'Invitation for Sign Up')
   end
+
+  def confirmation_mail(email, code)
+    @email = email
+    @code = code
+    mail(to: @email, subject: 'Your confirmation code...')
+  end
 end
