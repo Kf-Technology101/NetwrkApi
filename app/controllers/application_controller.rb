@@ -14,4 +14,8 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+
+  def facebook_oauth
+    
+  end
 end

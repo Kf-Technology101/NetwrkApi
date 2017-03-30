@@ -32,6 +32,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :email,
                                  :password,
                                  :phone,
-                                 :date_of_birthday)
+                                 :date_of_birthday,
+                                 :invitation_sent)
   end
 end

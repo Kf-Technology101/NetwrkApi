@@ -1,7 +1,7 @@
 # Login Api Part
 class Api::V1::SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_filter :check_token
+  skip_before_filter :check_token, except: [:invitation_check]
 
   def create
     user_password = params[:user][:password]
@@ -20,13 +20,17 @@ class Api::V1::SessionsController < ApplicationController
   def oauth_login
     user_id = params[:user][:provider_id]
     user_provider = params[:user][:provider_name]
-    user = user_id.present? && User.find_by(provider_id: user_id)
-    if user
+    provider = user_id.present? && Provider.find_by(provider_id: user_id)
+    if provider
+      user = provider.user
       sign_in user, store: false
       user.generate_authentication_token!
       user.save
     else
       user = User.create!(oauth_params)
+      user.providers << Provider.create(name: user_provider,
+                                        token: params[:user][:token],
+                                        provider_id: params[:user][:provider_id])
     end
     render json: user, status: 200
   end
@@ -44,6 +48,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   private
+
   def oauth_params
     params.require(:user).permit(:first_name,
                                  :last_name,

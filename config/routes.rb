@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :registrations, only: [:create, :update]
       resources :providers
+      resources :networks, only: [:index]
       resources :sessions, only: [:create, :destroy] do
         collection do
           post 'oauth_login'
