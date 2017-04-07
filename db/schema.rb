@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170324113313) do
+ActiveRecord::Schema.define(version: 20170407101434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,9 @@ ActiveRecord::Schema.define(version: 20170324113313) do
     t.string   "provider_id"
     t.string   "provider_name"
     t.boolean  "invitation_sent",        default: false
+    t.string   "role_name"
+    t.string   "role_description"
+    t.string   "role_image_url"
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
