@@ -5,7 +5,11 @@ class Api::V1::InvitationsController < ApplicationController
   def create
     contact_list = params[:contact_list]
     contact_list.each do |contact|
-      UserMailer.invitation_mail(contact[:name], contact[:email]).deliver_now
+      if contact[:email].present?
+        UserMailer.invitation_mail(contact[:name], contact[:email]).deliver_now
+      else
+        TwilioConnect.perform(contact[:phone], 'hello world')
+      end
     end
     render json: {status: 'success'}, status: 200
   rescue
