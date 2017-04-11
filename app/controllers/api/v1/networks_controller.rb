@@ -10,6 +10,11 @@ class Api::V1::NetworksController < ApplicationController
   end
 
   def create
-    
+    @network = Network.new(post_code: params[:post_code])
+    if @network.save
+      render json: @network
+    else
+      head 422
+    end
   end
 end
