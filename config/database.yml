@@ -3,8 +3,8 @@ default: &default
   encoding: unicode
   pool: 5
   timeout: 5000
-  # username: 'diletantik'
-  # password: 2452
+  username: 'diletantik'
+  password: 2452
 
 development:
   <<: *default

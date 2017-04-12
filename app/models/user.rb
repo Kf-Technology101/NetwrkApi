@@ -11,7 +11,9 @@ class User < ApplicationRecord
   validates_uniqueness_of :email
 
   has_many :posts
-  has_and_belongs_to_many :networks
+  # has_and_belongs_to_many :networks
+  has_many :networks_users
+  has_many :networks, through: :networks_users
   has_many :providers
 
   before_create :generate_authentication_token!
