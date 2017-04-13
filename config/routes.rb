@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :messages
       resources :networks_users, only: [:index]
       resources :members, only: [:create]
+      resources :profiles
       resources :sessions, only: [:create, :destroy] do
         collection do
           post 'oauth_login'
