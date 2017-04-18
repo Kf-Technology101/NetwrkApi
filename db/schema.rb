@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170410154402) do
+ActiveRecord::Schema.define(version: 20170418142547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20170410154402) do
     t.boolean  "undercover"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "network_id"
+    t.boolean  "legendary"
   end
 
   create_table "networks", force: :cascade do |t|

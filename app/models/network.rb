@@ -3,6 +3,7 @@ class Network < ApplicationRecord
   has_many :networks_users, dependent: :destroy
   has_many :users, through: :networks_users
   has_many :posts
+  has_many :messages
 
   validates_uniqueness_of :post_code
 end
