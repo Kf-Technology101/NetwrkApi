@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def create
     user_password = params[:user][:password]
-    user_login = params[:user][:login]
+    user_login = params[:user][:login].downcase!
     user = user_login.present? && User.where('email = ? OR phone = ?', user_login, user_login).first
     if user && user.valid_password?(user_password)
       sign_in user, store: false

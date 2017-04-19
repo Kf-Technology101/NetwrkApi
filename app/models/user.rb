@@ -18,6 +18,9 @@ class User < ApplicationRecord
 
   before_create :generate_authentication_token!
 
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+
   def generate_authentication_token!
     begin
       self.auth_token = Devise.friendly_token

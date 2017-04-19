@@ -13,6 +13,9 @@ class Api::V1::MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
     if @message.save
+      params[:message][:images].each do |image|
+        @message.images << Image.new(image: image)
+      end
       render json: @message
     else
       head 422

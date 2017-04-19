@@ -33,6 +33,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :password,
                                  :phone,
                                  :date_of_birthday,
-                                 :invitation_sent)
+                                 :invitation_sent,
+                                 :avatar)
   end
 end
