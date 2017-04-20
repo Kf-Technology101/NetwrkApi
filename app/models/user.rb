@@ -30,4 +30,8 @@ class User < ApplicationRecord
   def connected_networks
     providers.pluck(:name)
   end
+
+  def avatar_url
+    avatar.url
+  end
 end

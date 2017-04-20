@@ -14,11 +14,12 @@ class Api::V1::RegistrationsController < ApplicationController
   end
 
   def update
-    resource = User.find_by_id(params[:id])
+    resource = User.find_by(id: params[:id])
     resource.update(user_params)
+    # resource.avatar = params[:avatar]
     if resource.valid?
       resource.save
-      render json: resource, status: 200
+      render json: resource.as_json(methods: [:avatar_url]), status: 200
     else
       render json: resource.errors.messages, status: 422
     end

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         end
       end
       resources :invitations, only: [:create]
-      get '/sms', to: "invitations#sms"
+      get '/sms', to: 'invitations#sms'
     end
   end
 end

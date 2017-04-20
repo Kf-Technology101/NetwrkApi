@@ -13,7 +13,7 @@ class Api::V1::InvitationsController < ApplicationController
     end
     render json: {status: 'success'}, status: 200
   rescue
-    render json: {status: "Something went wrong"}, status: 422
+    render json: {status: 'Something went wrong'}, status: 422
   end
 
   def sms
