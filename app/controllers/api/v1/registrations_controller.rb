@@ -35,6 +35,9 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :phone,
                                  :date_of_birthday,
                                  :invitation_sent,
-                                 :avatar)
+                                 :avatar,
+                                 :role_name,
+                                 :role_description,
+                                 :role_image_url)
   end
 end

@@ -4,7 +4,11 @@ class Api::V1::MessagesController < ApplicationController
   def index
     network = Network.find_by(post_code: params[:post_code])
     if network.present?
-      render json: network.messages.as_json(methods: [:image_urls])
+      if params[:undercover] == 'true'
+        render json: network.messages.where(undercover: true).as_json(methods: [:image_urls])
+      else
+        render json: network.messages.where(undercover: false).as_json(methods: [:image_urls])
+      end
     else
       head 404
     end
