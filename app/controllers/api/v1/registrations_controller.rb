@@ -25,6 +25,15 @@ class Api::V1::RegistrationsController < ApplicationController
     end
   end
 
+  def check_login
+    logins = User.all.pluck(params[:type].to_sym)
+    if logins.include?(params[:login])
+      head 422
+    else
+      head 200
+    end
+  end
+
   private
 
   def user_params

@@ -10,7 +10,7 @@ class Api::V1::MessagesController < ApplicationController
         render json: network.messages.where(undercover: false).as_json(methods: [:image_urls])
       end
     else
-      head 404
+      head 204
     end
   end
 

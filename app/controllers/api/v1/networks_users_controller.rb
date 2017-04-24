@@ -4,7 +4,7 @@ class Api::V1::NetworksUsersController < ApplicationController
     if @network
       render json: @network.users
     else
-      head 421
+      head 204
     end
   end
 end

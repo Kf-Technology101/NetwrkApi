@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421083818) do
+ActiveRecord::Schema.define(version: 20170424143507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "deleted_messages", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "message_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "images", force: :cascade do |t|
     t.datetime "created_at",         null: false
@@ -31,11 +38,12 @@ ActiveRecord::Schema.define(version: 20170421083818) do
     t.decimal  "lng"
     t.decimal  "lat"
     t.boolean  "undercover"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "network_id"
     t.boolean  "legendary"
     t.integer  "likes_count", default: 0
+    t.boolean  "public",      default: true
   end
 
   create_table "networks", force: :cascade do |t|

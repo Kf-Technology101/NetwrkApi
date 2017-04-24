@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   devise_for :users
   namespace :api do
     namespace :v1 do
-      resources :registrations, only: [:create, :update]
+      resources :registrations, only: [:create, :update] do
+        collection do
+          get 'check_email'
+        end
+      end
       resources :providers
       resources :networks, only: [:index, :create]
       resources :messages
