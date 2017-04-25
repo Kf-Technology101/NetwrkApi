@@ -20,9 +20,11 @@ class Api::V1::MessagesController < ApplicationController
     # m_params = JSON.parse(params[:message])
     @message = Message.new(message_params)
     if @message.save
-      params[:images].each do |i|
-        image = Image.create(image: i)
-        @message.images << image
+      if params[:images].present?
+        params[:images].each do |i|
+          image = Image.create(image: i)
+          @message.images << image
+        end
       end
       render json: @message.as_json(methods: [:image_urls])
     else
