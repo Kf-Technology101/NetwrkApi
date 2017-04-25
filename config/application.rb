@@ -15,5 +15,6 @@ module BKServer
     config.autoload_paths << "#{Rails.root}/app/logic/authentication"
     config.autoload_paths << "#{Rails.root}/app/logic/facebook"
     config.autoload_paths << "#{Rails.root}/app/logic/twitter"
+    config.autoload_paths << "#{Rails.root}/app/logic/undercover"
   end
 end

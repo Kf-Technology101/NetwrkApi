@@ -5,7 +5,9 @@ class Api::V1::MessagesController < ApplicationController
     network = Network.find_by(post_code: params[:post_code])
     if network.present?
       if params[:undercover] == 'true'
-        render json: network.messages.where(undercover: true).as_json(methods: [:image_urls])
+        messages = CheckDistance.messages_in_radius(params[:post_code], params[:lng], params[:lat])
+        render json: messages.as_json(methods: [:image_urls])
+        # network.messages.where(undercover: true)
       else
         render json: network.messages.where(undercover: false).as_json(methods: [:image_urls])
       end
@@ -32,6 +34,17 @@ class Api::V1::MessagesController < ApplicationController
     @message = Message.find_by(id: params[:id])
     if @message
       @message.images << Image.new(image: params[:image])
+      render json: @message.as_json(methods: [:image_urls])
+    else
+      head 422
+    end
+  end
+
+  def lock
+    @message = Message.find_by(id: params[:id])
+    if @message
+      @message.update_attributes(hint: params[:hint], locked: true)
+      @message.save_password(params[:password])
       render json: @message.as_json(methods: [:image_urls])
     else
       head 422

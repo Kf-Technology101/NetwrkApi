@@ -20,4 +20,14 @@ class Message < ApplicationRecord
     user ||= current_user
     users.include?(user)
   end
+
+  def save_password(password)
+    self.password_salt = ActiveSupport::SecureRandom.base64(8)
+    self.password_hash = Digest::SHA2.hexdigest(password_salt + password)
+    save
+  end
+
+  def correct_password?(password)
+    password_hash == Digest::SHA2.hexdigest(password_salt + password)
+  end
 end

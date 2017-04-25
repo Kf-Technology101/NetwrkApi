@@ -1,7 +1,6 @@
 # Registration methods for API
 class Api::V1::RegistrationsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  skip_before_filter :check_token
+  skip_before_action :verify_authenticity_token, :check_token
 
   def create
     resource = User.new(user_params)
@@ -30,7 +29,7 @@ class Api::V1::RegistrationsController < ApplicationController
     if logins.include?(params[:login])
       head 422
     else
-      head 200
+      head 204
     end
   end
 

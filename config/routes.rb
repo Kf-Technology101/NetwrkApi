@@ -1,16 +1,27 @@
 Rails.application.routes.draw do
+  root 'home#index'
+  resources :home, only: [:index], path: '' do
+    collection do
+      get 'privacy'
+    end
+  end
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
   namespace :api do
     namespace :v1 do
       resources :registrations, only: [:create, :update] do
         collection do
-          get 'check_email'
+          get 'check_login'
         end
       end
       resources :providers
       resources :networks, only: [:index, :create]
-      resources :messages
+      resources :messages do
+        collection do
+          post 'lock'
+        end
+      end
       resources :networks_users, only: [:index]
       resources :members, only: [:create]
       resources :profiles
