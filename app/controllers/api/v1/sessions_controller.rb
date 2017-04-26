@@ -11,7 +11,7 @@ class Api::V1::SessionsController < ApplicationController
       sign_in user, store: false
       user.generate_authentication_token!
       user.save
-      render json: user, status: 200
+      render json: user.as_json(methods: [:avatar_url]), status: 200
     else
       render json: { errors: 'Invalid login or password' }, status: 422
     end
@@ -32,7 +32,7 @@ class Api::V1::SessionsController < ApplicationController
                                         token: params[:user][:token],
                                         provider_id: params[:user][:provider_id])
     end
-    render json: user, status: 200
+    render json: user.as_json(methods: [:avatar_url]), status: 200
   end
 
   def verification

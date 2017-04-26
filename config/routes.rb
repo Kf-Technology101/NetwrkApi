@@ -31,6 +31,7 @@ Rails.application.routes.draw do
           post 'verification'
         end
       end
+      resources :user_likes, only: [:create]
       resources :invitations, only: [:create]
       get '/sms', to: 'invitations#sms'
     end

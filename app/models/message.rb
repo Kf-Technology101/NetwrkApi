@@ -8,6 +8,11 @@ class Message < ApplicationRecord
 
   attr_accessor :current_user
 
+  def self.without_deleted(user_id, undercover)
+    ids = DeletedMessage.where(user_id: user_id, undercover: undercover).pluck(:message_id)
+    Message.where(id: ids)
+  end
+
   def image_urls
     urls = []
     images.each do |image|
@@ -22,7 +27,7 @@ class Message < ApplicationRecord
   end
 
   def save_password(password)
-    self.password_salt = ActiveSupport::SecureRandom.base64(8)
+    self.password_salt = SecureRandom.base64(8)
     self.password_hash = Digest::SHA2.hexdigest(password_salt + password)
     save
   end

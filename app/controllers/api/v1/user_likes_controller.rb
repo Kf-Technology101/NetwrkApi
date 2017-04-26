@@ -1,11 +1,17 @@
 # Like up and down
 class Api::V1::UserLikesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def create
+    puts like_params.inspect
     @like = UserLike.new(like_params)
     if @like.save
-      message = Message.find_by(id: params[:like][:message_id])
-      message.increment(:likes_count)
-      head 200
+      puts params[:user_like][:message_id]
+      message = Message.find_by(id: params[:user_like][:message_id])
+      puts message.inspect
+      message.likes_count += 1
+      message.save
+      render json: message
     else
       head 422
     end
@@ -14,7 +20,7 @@ class Api::V1::UserLikesController < ApplicationController
   private
 
   def like_params
-    params.require(:like).require(:user_id,
-                                  :message_id)
+    params.require(:user_like).permit(:user_id,
+                                      :message_id)
   end
 end

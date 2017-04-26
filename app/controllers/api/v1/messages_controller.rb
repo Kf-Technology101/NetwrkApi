@@ -5,7 +5,11 @@ class Api::V1::MessagesController < ApplicationController
     network = Network.find_by(post_code: params[:post_code])
     if network.present?
       if params[:undercover] == 'true'
-        messages = CheckDistance.messages_in_radius(params[:post_code], params[:lng], params[:lat])
+        messages = CheckDistance.messages_in_radius(params[:post_code],
+                                                    params[:lng],
+                                                    params[:lat],
+                                                    current_user.id,
+                                                    true)
         render json: messages.as_json(methods: [:image_urls])
         # network.messages.where(undercover: true)
       else
@@ -48,6 +52,29 @@ class Api::V1::MessagesController < ApplicationController
       @message.update_attributes(hint: params[:hint], locked: true)
       @message.save_password(params[:password])
       render json: @message.as_json(methods: [:image_urls])
+    else
+      head 422
+    end
+  end
+
+  def unlock
+    @message = Message.find_by(id: params[:id])
+    if @message && @message.correct_password(params[:password])
+      @message.update_attributes(locked: false,
+                                 password_salt: nil,
+                                 password_hash: nil)
+      @message.save
+      render json: @message.as_json(methods: [:image_urls])
+    else
+      head 422
+    end
+  end
+
+  def destroy
+    @message = Message.find_by(id: params[:id])
+    if @message
+      current_user.messages << @message
+      head 200
     else
       head 422
     end
