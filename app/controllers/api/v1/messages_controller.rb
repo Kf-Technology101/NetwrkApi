@@ -11,7 +11,7 @@ class Api::V1::MessagesController < ApplicationController
                                                     current_user.id,
                                                     true)
         # messages.current_user = current_user
-        render json: messages.as_json(methods: [:image_urls])#, :like_by_user?
+        render json: messages.as_json(methods: [:image_urls, :like_by_user?])
         # network.messages.where(undercover: true)
       else
         render json: network.messages.where(undercover: false).as_json(methods: [:image_urls])
