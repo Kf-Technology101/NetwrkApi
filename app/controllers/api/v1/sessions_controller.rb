@@ -28,6 +28,10 @@ class Api::V1::SessionsController < ApplicationController
       user.save
     else
       user = User.create!(oauth_params)
+      if params[:user][:image_url].present?
+        user.avatar = URI.parse(params[:user][:image_url])
+        user.save
+      end
       user.providers << Provider.create(name: user_provider,
                                         token: params[:user][:token],
                                         provider_id: params[:user][:provider_id])

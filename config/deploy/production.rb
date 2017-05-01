@@ -22,9 +22,9 @@
 # role :db,  %w{unroll@52.209.237.75}
 
 
-role :app, %w{ubuntu@54.200.151.55}
-role :web, %w{ubuntu@54.200.151.55}
-role :db,  %w{ubuntu@54.200.151.55}
+role :app, %w{ubuntu@34.208.20.67}
+role :web, %w{ubuntu@34.208.20.67}
+role :db,  %w{ubuntu@34.208.20.67}
 
 # Configuration
 # =============
