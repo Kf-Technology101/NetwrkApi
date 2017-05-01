@@ -10,7 +10,8 @@ class Api::V1::MessagesController < ApplicationController
                                                     params[:lat],
                                                     current_user.id,
                                                     true)
-        render json: messages.as_json(methods: [:image_urls])
+        messages.current_user = current_user
+        render json: messages.as_json(methods: [:image_urls, :like_by_user?])
         # network.messages.where(undercover: true)
       else
         render json: network.messages.where(undercover: false).as_json(methods: [:image_urls])
@@ -23,6 +24,7 @@ class Api::V1::MessagesController < ApplicationController
   def create
     # m_params = JSON.parse(params[:message])
     @message = Message.new(message_params)
+    Rails.logger.debug "DEBUG: #{@message.inspect} #{@message.valid?} #{@message.errors.messages}" if Rails.logger.debug?
     if @message.save
       if params[:images].present?
         params[:images].each do |i|

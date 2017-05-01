@@ -1,7 +1,9 @@
 class Message < ApplicationRecord
   belongs_to :network
   has_many :images
+
   has_many :user_likes
+  has_many :liked_users, through: :user_likes, class_name: 'User'
 
   has_many :deleted_messages
   has_many :users, through: :deleted_messages
@@ -24,6 +26,11 @@ class Message < ApplicationRecord
   def deleted_by_user?(user=nil)
     user ||= current_user
     users.include?(user)
+  end
+
+  def like_by_user?(user=nil)
+    user ||= current_user
+    liked_users.include?(user)
   end
 
   def save_password(password)
