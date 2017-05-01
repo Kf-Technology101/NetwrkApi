@@ -18,7 +18,7 @@ class Message < ApplicationRecord
   def image_urls
     urls = []
     images.each do |image|
-      urls << image.image.url
+      urls << image.image.url(:medium)
     end
     urls
   end
@@ -28,7 +28,7 @@ class Message < ApplicationRecord
     users.include?(user)
   end
 
-  def like_by_user?(user=nil)
+  def like_by_user(user=nil)
     user ||= current_user
     liked_users.include?(user)
   end

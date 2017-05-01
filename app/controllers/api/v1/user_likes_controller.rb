@@ -3,12 +3,9 @@ class Api::V1::UserLikesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    puts like_params.inspect
     @like = UserLike.new(like_params)
     if @like.save
-      puts params[:user_like][:message_id]
       message = Message.find_by(id: params[:user_like][:message_id])
-      puts message.inspect
       message.likes_count += 1
       message.save
       render json: message

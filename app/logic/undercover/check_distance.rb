@@ -9,9 +9,9 @@ class CheckDistance
     network = Network.find_by(post_code: post_code)
     network.messages.where(undercover: true).each do |message|
       distance = Geocoder::Calculations.distance_between([current_lng,current_lat], [message.lng,message.lat])
-      puts distance
-      puts miles_to_yards(distance)
-      puts in_radius?(miles_to_yards(distance))
+      # puts distance
+      # puts miles_to_yards(distance)
+      # puts in_radius?(miles_to_yards(distance))
       message.current_user = user
       if in_radius?(miles_to_yards(distance)) && !message.deleted_by_user?
         messages_in_radius << message
