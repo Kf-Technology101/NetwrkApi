@@ -14,7 +14,9 @@ class Api::V1::MessagesController < ApplicationController
       else
         messages = network.messages
         if messages.present?
-          messages.current_user = current_user
+          messages.each do |m|
+            m.current_user = current_user
+          end
           render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user])
         else
           render json: {messages: []}
