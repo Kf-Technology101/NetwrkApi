@@ -7,4 +7,14 @@ class Api::V1::ProfilesController < ApplicationController
       head 404
     end
   end
+
+  def user_by_provider
+    @provider = Provider.find_by(provider_id: params[:provider_id])
+    puts @provider.inspect
+    if @provider.present?
+      render json: @provider.user
+    else
+      head 204
+    end
+  end
 end

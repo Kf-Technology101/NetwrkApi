@@ -13,8 +13,12 @@ class Api::V1::MessagesController < ApplicationController
         render json: messages.as_json(methods: [:image_urls, :like_by_user])
       else
         messages = network.messages
-        messages.current_user = current_user
-        render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user])
+        if messages.present?
+          messages.current_user = current_user
+          render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user])
+        else
+          render json: {messages: []}
+        end
       end
     else
       head 204
@@ -88,6 +92,7 @@ class Api::V1::MessagesController < ApplicationController
                                     :lng,
                                     :lat,
                                     :undercover,
-                                    :network_id)
+                                    :network_id,
+                                    :public)
   end
 end

@@ -24,7 +24,11 @@ Rails.application.routes.draw do
       end
       resources :networks_users, only: [:index]
       resources :members, only: [:create]
-      resources :profiles
+      resources :profiles do
+        collection do
+          get 'user_by_provider'
+        end
+      end
       resources :sessions, only: [:create, :destroy] do
         collection do
           post 'oauth_login'

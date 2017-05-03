@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   has_many :posts
   # has_and_belongs_to_many :networks
-  has_many :networks_users
+  has_many :networks_users, dependent: :destroy
   has_many :networks, through: :networks_users
 
   #
