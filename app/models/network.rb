@@ -6,4 +6,13 @@ class Network < ApplicationRecord
   has_many :messages
 
   validates_uniqueness_of :post_code
+
+  attr_accessor :current_user
+
+  def accessed(user=nil)
+    user ||= current_user
+    NetworksUser.where(network_id: self.id,
+                       user_id: user.id,
+                       invitation_sent: true).first.present?
+  end
 end

@@ -5,7 +5,8 @@ class Api::V1::NetworksController < ApplicationController
     post_code = params[:post_code]
     @network = Network.find_by(post_code: post_code)
     if @network
-      render json: {network: @network, users: @network.users}, status: 200
+      @network.current_user = current_user
+      render json: {network: @network.as_json(methods: [:accessed]), users: @network.users}, status: 200
     else
       render json: {message: 'Network not found'}, status: 200
     end

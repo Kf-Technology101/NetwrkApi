@@ -10,14 +10,14 @@ class Api::V1::MessagesController < ApplicationController
                                                     params[:lat],
                                                     current_user.id,
                                                     true)
-        render json: messages.as_json(methods: [:image_urls, :like_by_user])
+        render json: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
       else
         messages = network.messages
         if messages.present?
           messages.each do |m|
             m.current_user = current_user
           end
-          render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user])
+          render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
         else
           render json: {messages: []}
         end

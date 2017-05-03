@@ -5,6 +5,9 @@ class Message < ApplicationRecord
   has_many :user_likes
   has_many :liked_users, through: :user_likes, class_name: 'User'
 
+  has_many :legendary_likes
+  has_many :legendary_users, through: :legendary_likes, class_name: 'User'
+
   has_many :deleted_messages
   has_many :users, through: :deleted_messages
 
@@ -31,6 +34,11 @@ class Message < ApplicationRecord
   def like_by_user(user=nil)
     user ||= current_user
     liked_users.include?(user)
+  end
+
+  def legendary_by_user(user=nil)
+    user ||= current_user
+    legendary_users.include?(user)
   end
 
   def save_password(password)

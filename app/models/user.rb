@@ -22,6 +22,9 @@ class User < ApplicationRecord
   has_many :user_likes
   has_many :liked_messages, through: :user_likes, class_name: 'Message'
 
+  has_many :legendary_likes
+  has_many :legendary_messages, through: :legendary_likes, class_name: 'Message'
+
   has_many :providers, dependent: :destroy
 
   before_create :generate_authentication_token!
