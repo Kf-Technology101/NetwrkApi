@@ -90,6 +90,7 @@ class Api::V1::MessagesController < ApplicationController
 
   def message_params
     params.require(:message).permit(:text,
+                                    :is_emoji,
                                     :user_id,
                                     :lng,
                                     :lat,
