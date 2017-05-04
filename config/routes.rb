@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+
   root 'home#index'
   resources :home, only: [:index], path: '' do
     collection do
@@ -20,6 +22,7 @@ Rails.application.routes.draw do
       resources :messages do
         collection do
           post 'lock'
+          post 'delete'
         end
       end
       resources :networks_users, only: [:index]

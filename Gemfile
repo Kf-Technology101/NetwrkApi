@@ -49,6 +49,7 @@ group :development, :test do
 
   # Remove the following if your server does not use RVM
   gem 'capistrano-rvm'
+  gem 'capistrano-sidekiq'
 end
 
 group :development do
@@ -73,3 +74,4 @@ gem 'koala'
 gem 'twitter'
 gem 'geocoder'
 gem 'paperclip'
+gem 'sidekiq'
