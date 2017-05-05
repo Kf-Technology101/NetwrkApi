@@ -39,6 +39,12 @@ class Api::V1::MessagesController < ApplicationController
           @message.images << image
         end
       end
+      if params[:social_urls].present?
+        params[:social_urls].each do |i|
+          image = Image.create(image: URI.parse(i))
+          @message.images << image
+        end
+      end
       render json: @message.as_json(methods: [:image_urls])
     else
       head 422
