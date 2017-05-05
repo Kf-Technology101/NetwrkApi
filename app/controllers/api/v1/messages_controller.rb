@@ -107,6 +107,7 @@ class Api::V1::MessagesController < ApplicationController
                                     :lat,
                                     :undercover,
                                     :network_id,
-                                    :public)
+                                    :public,
+                                    :social)
   end
 end
