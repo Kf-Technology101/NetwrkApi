@@ -12,7 +12,7 @@ class Api::V1::MessagesController < ApplicationController
                                                     true)
         messages = Message.where(id: messages.map(&:id))
         ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
-        messages = messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset])
+        messages = messages.where.not(id: ids_to_exclude).limit(params[:limit]).offset(params[:offset]).order(:created_at)
         render json: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
       else
         messages = network.messages
@@ -20,7 +20,7 @@ class Api::V1::MessagesController < ApplicationController
           messages.each do |m|
             m.current_user = current_user
           end
-          messages = messages.order(created_at: :desc).limit(params[:limit]).offset(params[:offset])
+          messages = messages.limit(params[:limit]).offset(params[:offset]).order(:created_at)
           render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
         else
           render json: {messages: []}
@@ -33,6 +33,8 @@ class Api::V1::MessagesController < ApplicationController
 
   def create
     @message = Message.new(message_params)
+    puts @message.valid?
+    puts @message.errors.messages
     if @message.save
       if params[:images].present?
         params[:images].each do |i|
