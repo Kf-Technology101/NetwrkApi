@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503125256) do
+ActiveRecord::Schema.define(version: 20170505114721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20170503125256) do
     t.string   "password_salt"
     t.boolean  "is_emoji",        default: false
     t.integer  "legendary_count", default: 0
+    t.string   "social"
   end
 
   create_table "networks", force: :cascade do |t|
