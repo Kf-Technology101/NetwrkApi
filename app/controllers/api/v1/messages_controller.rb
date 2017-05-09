@@ -48,7 +48,7 @@ class Api::V1::MessagesController < ApplicationController
           @message.images << image
         end
       end
-      render json: @message.as_json(methods: [:image_urls])
+      render json: @message.as_json(methods: [:image_urls, :user])
     else
       head 422
     end

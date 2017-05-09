@@ -2,7 +2,7 @@ class Api::V1::ProfilesController < ApplicationController
   def show
     user = User.find_by(id: params[:id])
     if user.present?
-      render json: user.as_json(methods: [:avatar_url]), except: [:auth_token, :created_at, :encrypted_password, :hero_avatar_url]
+      render json: user.as_json(methods: [:avatar_url, :hero_avatar_url]), except: [:auth_token, :created_at, :encrypted_password]
     else
       head 404
     end
