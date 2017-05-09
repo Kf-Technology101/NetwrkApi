@@ -5,6 +5,12 @@ class UserMailer < ApplicationMailer
     mail(to: @email, subject: 'Invitation for Sign Up')
   end
 
+  def greetings_mail(email)
+    @name = name
+    @email = email
+    mail(to: @email, subject: 'Invitation for Sign Up')
+  end
+
   def confirmation_mail(email, code)
     @email = email
     @code = code

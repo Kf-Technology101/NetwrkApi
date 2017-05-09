@@ -18,7 +18,7 @@ class Api::V1::RegistrationsController < ApplicationController
     # resource.avatar = params[:avatar]
     if resource.valid?
       resource.save
-      render json: resource.as_json(methods: [:avatar_url]), status: 200
+      render json: resource.as_json(methods: [:avatar_url, :hero_avatar_url]), status: 200
     else
       render json: resource.errors.messages, status: 422
     end
@@ -47,6 +47,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :avatar,
                                  :role_name,
                                  :role_description,
-                                 :role_image_url)
+                                 :role_image_url,
+                                 :hero_avatar)
   end
 end

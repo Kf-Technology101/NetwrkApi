@@ -50,4 +50,9 @@ class Message < ApplicationRecord
   def correct_password?(password)
     password_hash == Digest::SHA2.hexdigest(password_salt + password)
   end
+
+  def user
+    u = User.find_by(id: user_id)
+    u.as_json(methods: [:avatar_url, :hero_avatar_url], only: [:name, :role_name])
+  end
 end

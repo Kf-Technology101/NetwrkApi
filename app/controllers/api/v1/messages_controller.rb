@@ -12,15 +12,15 @@ class Api::V1::MessagesController < ApplicationController
                                                     true)
         messages = Message.where(id: messages.map(&:id))
         ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
-        messages = messages.where.not(id: ids_to_exclude).limit(params[:limit]).offset(params[:offset]).order(:created_at)
-        render json: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
+        messages = messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset])
+        render json: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])
       else
         messages = network.messages
         if messages.present?
           messages.each do |m|
             m.current_user = current_user
           end
-          messages = messages.limit(params[:limit]).offset(params[:offset]).order(:created_at)
+          messages = messages.limit(params[:limit]).order(created_at: :desc).offset(params[:offset])#.order(:created_at)
           render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
         else
           render json: {messages: []}
@@ -42,8 +42,8 @@ class Api::V1::MessagesController < ApplicationController
           @message.images << image
         end
       end
-      if params[:social_urls].present?
-        params[:social_urls].each do |i|
+      if params[:message][:social_urls].present?
+        params[:message][:social_urls].each do |i|
           image = Image.create(image: URI.parse(i))
           @message.images << image
         end

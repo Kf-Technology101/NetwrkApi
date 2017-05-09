@@ -32,6 +32,9 @@ class User < ApplicationRecord
   has_attached_file :avatar, styles: { medium: "256x256#", thumb: "100x100>" }, default_url: "/images/missing.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
+  has_attached_file :hero_avatar, styles: { medium: "256x256#", thumb: "100x100>" }, default_url: "/images/missing.png"
+  validates_attachment_content_type :hero_avatar, content_type: /\Aimage\/.*\z/
+
   def generate_authentication_token!
     begin
       self.auth_token = Devise.friendly_token
@@ -43,6 +46,10 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    avatar.url(:medium)
+    ActionController::Base.helpers.asset_path(avatar.url(:medium))
+  end
+
+  def hero_avatar_url
+    hero_avatar.present? ? (ActionController::Base.helpers.asset_path(hero_avatar.url(:medium))) : role_image_url
   end
 end

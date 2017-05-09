@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505114721) do
+ActiveRecord::Schema.define(version: 20170508135438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,18 +102,18 @@ ActiveRecord::Schema.define(version: 20170505114721) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "email",                    default: "",    null: false
+    t.string   "encrypted_password",       default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",            default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.string   "auth_token"
     t.string   "phone"
     t.string   "first_name"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20170505114721) do
     t.date     "date_of_birthday"
     t.string   "provider_id"
     t.string   "provider_name"
-    t.boolean  "invitation_sent",        default: false
+    t.boolean  "invitation_sent",          default: false
     t.string   "role_name"
     t.string   "role_description"
     t.string   "role_image_url"
@@ -130,6 +130,10 @@ ActiveRecord::Schema.define(version: 20170505114721) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string   "name"
+    t.string   "hero_avatar_file_name"
+    t.string   "hero_avatar_content_type"
+    t.integer  "hero_avatar_file_size"
+    t.datetime "hero_avatar_updated_at"
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
