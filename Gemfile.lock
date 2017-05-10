@@ -151,6 +151,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.0.1)
+    newrelic_rpm (4.1.0.333)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -304,6 +305,7 @@ DEPENDENCIES
   jquery-rails
   koala
   listen (~> 3.0.5)
+  newrelic_rpm
   paperclip
   pg
   phonelib

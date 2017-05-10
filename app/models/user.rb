@@ -29,6 +29,8 @@ class User < ApplicationRecord
 
   before_create :generate_authentication_token!
 
+  enum gender: %i[male female]
+
   has_attached_file :avatar, styles: { medium: "256x256#", thumb: "100x100>" }, default_url: "/images/missing.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
@@ -51,5 +53,13 @@ class User < ApplicationRecord
 
   def hero_avatar_url
     hero_avatar.present? ? (ActionController::Base.helpers.asset_path(hero_avatar.url(:medium))) : role_image_url
+  end
+
+  def able_to_post_legendary?
+    legendary_at.nil? || legendary_days >= 30
+  end
+
+  def legendary_days
+    (DateTime.now.to_date - legendary_at.to_date).to_i
   end
 end

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       resources :user_likes, only: [:create]
       resources :legendary_likes, only: [:create]
       resources :invitations, only: [:create]
+      resources :contacts, only: [:create]
       get '/sms', to: 'invitations#sms'
     end
   end

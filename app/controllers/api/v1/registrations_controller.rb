@@ -48,6 +48,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :role_name,
                                  :role_description,
                                  :role_image_url,
-                                 :hero_avatar)
+                                 :hero_avatar,
+                                 :gender)
   end
 end

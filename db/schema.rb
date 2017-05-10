@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170508135438) do
+ActiveRecord::Schema.define(version: 20170510121222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contacts", force: :cascade do |t|
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "deleted_messages", force: :cascade do |t|
     t.integer  "user_id"
@@ -134,6 +140,8 @@ ActiveRecord::Schema.define(version: 20170508135438) do
     t.string   "hero_avatar_content_type"
     t.integer  "hero_avatar_file_size"
     t.datetime "hero_avatar_updated_at"
+    t.integer  "gender"
+    t.datetime "legendary_at"
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
