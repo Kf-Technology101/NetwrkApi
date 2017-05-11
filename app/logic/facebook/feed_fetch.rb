@@ -2,20 +2,24 @@ class FeedFetch
   require 'koala'
 
   def self.perform
-    # @graph = Koala::Facebook::API.new(User.last.providers.where(name: 'facebook').first.token)
-    access_token = User.last.providers.first.token
+    User.all.each do |user|
+      access_token = user.providers.first.token
+      feed = get_feed(access_token)
+      feed.each do |message|
+        save_message(message)
+      end
+    end
+  end
+
+  def self.get_feed(access_token)
     @graph = Koala::Facebook::API.new(access_token)
-    puts @graph.inspect
-    # @posts = @graph.get_connection('me', 'posts',{ fields: ['id', 'message', 'link', 'name', 'description', "likes.summary(true)", "shares", "comments.summary(true)"]})
-    # puts @posts.inspect
-    @user = @graph.get_object("me")
-    puts @user
-    @feed = @graph.get_connection('LinkUpSt', 'posts', {
-      limit: 20,
-      fields: ['message', 'id', 'from', 'type', 'picture', 'link', 'created_time', 'updated_time']
-    })
-    # @feed = @graph.get_connection('me', 'feed')
-    # @postid = @feed.first['id']
-    # @post_data = @post_graph.get_connections(@postid, 'likes')
+    @feed = @graph.get_connection('me', 'posts', {fields: ['id',
+                                                           'message',
+                                                           'full_picture',
+                                                           'created_time']})
+  end
+
+  def self.save_message(message)
+    
   end
 end

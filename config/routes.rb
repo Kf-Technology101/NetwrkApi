@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         collection do
           post 'lock'
           post 'delete'
+          post 'sms_sharing'
         end
       end
       resources :networks_users, only: [:index]

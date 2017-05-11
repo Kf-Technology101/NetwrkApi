@@ -88,6 +88,13 @@ class Api::V1::MessagesController < ApplicationController
     end
   end
 
+  def sms_sharing
+    params[:phone_numbers].each do |phone|
+      TwilioConnect.perform(phone, params[:message])
+    end
+    head 204
+  end
+
   def delete
     @messages = Message.where(id: params[:ids])
     if @messages

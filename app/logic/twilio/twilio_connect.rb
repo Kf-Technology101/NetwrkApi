@@ -9,5 +9,6 @@ class TwilioConnect
       to: phone,
       body: code
     )
+  rescue
   end
 end
