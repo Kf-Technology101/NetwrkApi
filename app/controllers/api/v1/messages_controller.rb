@@ -21,7 +21,7 @@ class Api::V1::MessagesController < ApplicationController
             m.current_user = current_user
           end
           messages = messages.limit(params[:limit]).order(created_at: :desc).offset(params[:offset]).includes(:images)#.order(:created_at)
-          render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user, :legendary_by_user])
+          render json: messages.where(undercover: false).as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])
         else
           render json: {messages: []}
         end
@@ -48,6 +48,8 @@ class Api::V1::MessagesController < ApplicationController
           @message.images << image
         end
       end
+      # ActionCable.server.broadcast "chat_channel", message: @message.as_json(methods: [:image_urls, :user])
+      # head 204
       render json: @message.as_json(methods: [:image_urls, :user])
     else
       head 422

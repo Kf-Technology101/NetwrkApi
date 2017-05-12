@@ -1,11 +1,14 @@
 class ChatChannel < ApplicationCable::Channel
-  def subscribed
-    stream_from 'messages'
+  def subscribed#(zip_code)
+    stream_from 'chat_channel'#+zip_code
   end
 
   def speak(data)
-    ActionCable.server.broadcast('messages',
-      message: render_message(data['message']))
+    ActionCable.server.broadcast "chat_channel", message: data#['message']
+  end
+
+  def unfollow
+    stop_all_streams
   end
 
   private

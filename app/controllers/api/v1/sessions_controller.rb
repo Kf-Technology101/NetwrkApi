@@ -10,8 +10,9 @@ class Api::V1::SessionsController < ApplicationController
     if user && user.valid_password?(user_password)
       sign_in user, store: false
       user.generate_authentication_token!
+      # user.sign_in_count += 1
       user.save
-      render json: user.as_json(methods: [:avatar_url]), status: 200
+      render json: user.as_json(methods: [:avatar_url, :log_in_count]), status: 200
     else
       render json: { errors: 'Invalid login or password' }, status: 422
     end
@@ -25,18 +26,20 @@ class Api::V1::SessionsController < ApplicationController
       user = provider.user
       sign_in user, store: false
       user.generate_authentication_token!
+      # user.sign_in_count += 1
       user.save
     else
       user = User.create!(oauth_params)
       if params[:user][:image_url].present?
         user.avatar = URI.parse(params[:user][:image_url])
-        user.save
       end
+      # user.sign_in_count += 1
+      user.save
       user.providers << Provider.create(name: user_provider,
                                         token: params[:user][:token],
                                         provider_id: params[:user][:provider_id])
     end
-    render json: user.as_json(methods: [:avatar_url]), status: 200
+    render json: user.as_json(methods: [:avatar_url, :log_in_count]), status: 200
   end
 
   def verification

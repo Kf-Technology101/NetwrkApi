@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
   root 'home#index'
+  resources :messages
   resources :home, only: [:index], path: '' do
     collection do
       get 'privacy'

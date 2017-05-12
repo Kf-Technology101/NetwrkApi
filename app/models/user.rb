@@ -62,4 +62,8 @@ class User < ApplicationRecord
   def legendary_days
     (DateTime.now.to_date - legendary_at.to_date).to_i
   end
+
+  def log_in_count
+    sign_in_count
+  end
 end

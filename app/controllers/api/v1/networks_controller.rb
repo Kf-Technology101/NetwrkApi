@@ -3,6 +3,7 @@ class Api::V1::NetworksController < ApplicationController
 
   def index
     post_code = params[:post_code]
+    FeedFetch.user_fetch(current_user.id)
     @network = Network.find_by(post_code: post_code)
     if @network
       @network.current_user = current_user
