@@ -21,7 +21,8 @@ class Message < ApplicationRecord
   def image_urls
     urls = []
     images.each do |image|
-      urls << image.image.url(:medium)
+      puts ActionController::Base.helpers.asset_path(image.image.url(:medium))
+      urls << ActionController::Base.helpers.asset_path(image.image.url(:medium))
     end
     urls
   end

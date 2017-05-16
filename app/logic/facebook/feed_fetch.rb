@@ -40,7 +40,8 @@ class FeedFetch
                                               network_id: network.id,
                                               user_id: user_id,
                                               social: 'facebook',
-                                              created_at: message['created_time'])
+                                              created_at: message['created_time'],
+                                              undercover: false)
       # new_message.save
       if message['full_picture'].present?
         new_message.images << Image.create(image: URI.parse(message['full_picture']))

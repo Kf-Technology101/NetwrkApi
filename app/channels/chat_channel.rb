@@ -1,6 +1,11 @@
 class ChatChannel < ApplicationCable::Channel
   def subscribed#(zip_code)
-    stream_from 'chat_channel'#+zip_code
+    puts 'I'*1000
+    puts params.inspect
+    # puts params.url
+    # puts request.url
+    stop_all_streams
+    stream_from "messages#{params[:post_code]}chat"##+zip_code
   end
 
   def speak(data)

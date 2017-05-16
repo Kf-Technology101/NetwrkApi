@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           post 'lock'
           post 'delete'
           post 'sms_sharing'
+          get 'legendary_list'
         end
       end
       resources :networks_users, only: [:index]
