@@ -5,7 +5,6 @@ class Api::V1::RegistrationsController < ApplicationController
   def create
     resource = User.new(user_params)
     if resource.valid?
-      # resource.sign_in_count = 1
       resource.save
       render json: resource.as_json(methods: [:log_in_count]), status: 200
     else
@@ -16,7 +15,6 @@ class Api::V1::RegistrationsController < ApplicationController
   def update
     resource = User.find_by(id: params[:id])
     resource.update(user_params)
-    # resource.avatar = params[:avatar]
     if resource.valid?
       resource.save
       render json: resource.as_json(methods: [:avatar_url, :hero_avatar_url, :log_in_count]), status: 200

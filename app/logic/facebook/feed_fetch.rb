@@ -36,18 +36,23 @@ class FeedFetch
     user = User.find_by(id: user_id)
     puts 'created new_message'
     user.networks.each do |network|
-      new_message = Message.find_or_create_by(text: message['message'],
-                                              network_id: network.id,
-                                              user_id: user_id,
-                                              social: 'facebook',
-                                              created_at: message['created_time'],
-                                              undercover: false)
-      # new_message.save
-      if message['full_picture'].present?
-        new_message.images << Image.create(image: URI.parse(message['full_picture']))
+      old_message = Message.find_by(text: message['message'],
+                                    network_id: network.id,
+                                    user_id: user_id,
+                                    social: 'facebook',
+                                    created_at: message['created_time'],
+                                    undercover: false)
+      unless old_message.present?
+        new_message = Message.create(text: message['message'],
+                                      network_id: network.id,
+                                      user_id: user_id,
+                                      social: 'facebook',
+                                      created_at: message['created_time'],
+                                      undercover: false)
+        if message['full_picture'].present?
+          new_message.images << Image.create(image: URI.parse(message['full_picture']))
+        end
       end
-      # new_message.created_at = message['created_time'].to_datetime
-      # new_message.save
     end
   end
 end

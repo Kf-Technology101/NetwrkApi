@@ -18,8 +18,6 @@ class Api::V1::MessagesController < ApplicationController
           m.current_user = current_user
         end
         messages = messages.where(undercover: false).limit(params[:limit]).order(created_at: :desc).offset(params[:offset]).includes(:images)#.order(:created_at)
-      # else
-      #   messages = []
       end
       if params[:user_id].present?
         undercover_messages = undercover_messages.where(user_id: params[:user_id])
@@ -55,7 +53,7 @@ class Api::V1::MessagesController < ApplicationController
           @message.images << image
         end
       end
-      ActionCable.server.broadcast "messages#{params[:post_code]}chat", message: @message.as_json(methods: [:image_urls, :user])#"messages:#{params[:post_code]}:chat"
+      ActionCable.server.broadcast "messages#{params[:post_code]}chat", message: @message.as_json(methods: [:image_urls, :user])
       # head 204
       render json: @message.as_json(methods: [:image_urls, :user])
     else
@@ -100,8 +98,9 @@ class Api::V1::MessagesController < ApplicationController
   def legendary_list
     network = Network.find_by(id: params[:network_id])
     if network.present?
-      ids = LegendaryLike.where(network_id: network.id).pluck(:legendary_id).uniq
-      messages = Messages.where(id: ids)
+      message_ids = network.messages.pluck(:id)
+      ids = LegendaryLike.where(message_id: message_ids).pluck(:message_id).uniq
+      messages = Message.where(id: ids)
       render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])}
     else
       head 204
@@ -116,7 +115,9 @@ class Api::V1::MessagesController < ApplicationController
   end
 
   def delete
-    @messages = Message.where(id: params[:ids])
+    @messages = Message.where(network_id: params[:network_id])
+    ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
+    @messages = @messages.where.not(id: ids_to_exclude)
     if @messages
       @messages.each do |m|
         current_user.messages_deleted << m

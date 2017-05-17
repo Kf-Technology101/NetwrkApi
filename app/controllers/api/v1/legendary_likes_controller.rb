@@ -7,9 +7,6 @@ class Api::V1::LegendaryLikesController < ApplicationController
                                   user_id: current_user.id).first
       message = Message.find_by(id: params[:legendary][:message_id])
       if @like.present?
-        # @like.destroy
-        # message.legendary_count -= 1
-        # message.save
         render json: message
       else
         @like = LegendaryLike.new(like_params)
