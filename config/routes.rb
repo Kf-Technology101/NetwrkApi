@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :home, only: [:index], path: '' do
     collection do
       get 'privacy'
+      get 'clear_messages'
     end
   end
 
