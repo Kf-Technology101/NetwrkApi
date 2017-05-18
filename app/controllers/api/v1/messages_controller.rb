@@ -12,6 +12,7 @@ class Api::V1::MessagesController < ApplicationController
       undercover_messages = Message.where(id: messages.map(&:id))
       ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
       undercover_messages = undercover_messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
+      puts undercover_messages
       messages = network.messages
       if messages.present?
         messages.each do |m|
@@ -24,7 +25,33 @@ class Api::V1::MessagesController < ApplicationController
         messages = messages.where(user_id: params[:user_id])
       end
       if params[:undercover] == 'true'
-        render json: {messages: undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])}
+        if params[:current_ids].present?
+          puts params[:current_ids]
+          puts params[:current_ids].split(',').map(&:to_i)
+          # current_ids = params[:current_ids].split(',').map(&:to_i)
+          quered_ids = undercover_messages.pluck(:id)
+          puts 'quered_ids'
+          puts quered_ids
+          if params[:current_ids].split(',').map(&:to_i) == (params[:current_ids].split(',').map(&:to_i) && quered_ids)
+            puts 'EMPTY OBJECTS'
+            ids_to_remove = []
+            undercover_messages = []
+          else
+            ids_to_remove = params[:current_ids].split(',').map(&:to_i) - quered_ids
+            puts 'ids_to_remove'
+            puts ids_to_remove
+            new_ids = quered_ids - params[:current_ids].split(',').map(&:to_i)
+            puts 'new_ids'
+            puts new_ids
+            undercover_messages = undercover_messages.where(id: new_ids)#Message.where(id: new_ids).order(created_at: :desc).includes(:images)
+            puts undercover_messages
+            undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])
+          end
+        else
+          ids_to_remove = []
+          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])
+        end
+        render json: {messages: undercover_messages, ids_to_remove: ids_to_remove}
       elsif params[:undercover] == 'false'
         render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])}
       else
