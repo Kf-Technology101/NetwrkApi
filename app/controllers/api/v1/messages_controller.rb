@@ -84,7 +84,7 @@ class Api::V1::MessagesController < ApplicationController
         ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
         messages = messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
       else
-        messages = network.messages.where(user_id: current_user.id)
+        messages = network.messages.where(user_id: params[:user_id])
       end
       render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user])}
     else
