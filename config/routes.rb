@@ -27,6 +27,7 @@ Rails.application.routes.draw do
           post 'delete'
           post 'sms_sharing'
           get 'legendary_list'
+          get 'profile_messages'
         end
       end
       resources :networks_users, only: [:index]
