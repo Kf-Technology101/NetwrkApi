@@ -17,8 +17,10 @@ class FeedFetch
     puts access_token
     feed = get_feed(access_token)
     puts feed.inspect
-    feed.limit(20).each do |message|
-      next if message['privacy']['value'] == 'ALL_FRIENDS'
+    feed.each do |message|
+      puts message['privacy']['value']
+      puts message['privacy']['value'] == 'ALL_FRIENDS'
+      next unless message['privacy']['value'] == 'EVERYONE' || message['privacy']['value'] == ''
       puts message['created_time']
       save_message(message, user.id)
     end
