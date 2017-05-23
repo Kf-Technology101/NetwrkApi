@@ -77,3 +77,4 @@ gem 'paperclip'
 gem 'sidekiq'
 gem 'newrelic_rpm'
 gem 'instagram'
+gem 'capistrano-rails-console', require: false
