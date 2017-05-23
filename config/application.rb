@@ -16,5 +16,10 @@ module BKServer
     config.autoload_paths << "#{Rails.root}/app/logic/facebook"
     config.autoload_paths << "#{Rails.root}/app/logic/twitter"
     config.autoload_paths << "#{Rails.root}/app/logic/undercover"
+    config.autoload_paths << "#{Rails.root}/app/logic/instagram"
+
+    config.to_prepare do
+      Devise::SessionsController.skip_before_action :check_token
+    end
   end
 end

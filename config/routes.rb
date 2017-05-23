@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :admins
   mount ActionCable.server => '/cable'
 
   root 'home#index'
