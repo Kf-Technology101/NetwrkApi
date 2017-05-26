@@ -1,4 +1,6 @@
 class Api::V1::ProfilesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def show
     user = User.find_by(id: params[:id])
     if user.present?
@@ -16,5 +18,22 @@ class Api::V1::ProfilesController < ApplicationController
     else
       head 204
     end
+  end
+
+  def connect_social
+    providers = current_user.providers
+    provider = providers.where(name: params[:user][:provider_name]).first
+    if provider.present?
+      provider.update_attributes(token: params[:user][:token],
+                                 provider_id: params[:user][:provider_id],
+                                 secret: params[:user][:secret])
+      provider.save
+    else
+      current_user.providers << Provider.create(name: params[:user][:provider_name],
+                                                token: params[:user][:token],
+                                                provider_id: params[:user][:provider_id],
+                                                secret: params[:user][:secret])
+    end
+    head 204
   end
 end

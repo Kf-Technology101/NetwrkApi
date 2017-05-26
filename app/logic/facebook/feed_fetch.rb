@@ -13,7 +13,7 @@ class FeedFetch
 
   def self.user_fetch(user_id)
     user = User.find_by(id: user_id)
-    access_token = user.providers.last.token
+    access_token = user.providers.where(name: 'fb').last.token
     puts access_token
     feed = get_feed(access_token)
     puts feed.inspect

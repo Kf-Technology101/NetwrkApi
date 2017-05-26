@@ -11,6 +11,8 @@ class Message < ApplicationRecord
   has_many :deleted_messages
   has_many :users, through: :deleted_messages
 
+  URI_REGEX = %r"((?:(?:[^ :/?#]+):)(?://(?:[^ /?#]*))(?:[^ ?#]*)(?:\?(?:[^ #]*))?(?:#(?:[^ ]*))?)"
+
   attr_accessor :current_user
 
   def self.without_deleted(user_id, undercover)
@@ -46,6 +48,28 @@ class Message < ApplicationRecord
     self.password_salt = SecureRandom.base64(8)
     self.password_hash = Digest::SHA2.hexdigest(password_salt + password)
     save
+  end
+
+  def text_with_links
+    urls_with_tags = []
+    if self.text.present?
+      links = URI.extract(self.text)
+      new_message = remove_uris(self.text)
+      links.each do |link|
+        new_message += ' <a href="' + link + '">' + link + '</a> '
+      end if links.present?
+      new_message
+    else
+      new_message = self.text
+    end
+  end
+
+  def remove_uris(text)
+    text.split(URI_REGEX).collect do |s|
+      unless s =~ URI_REGEX
+        s
+      end
+    end.join
   end
 
   def correct_password?(password)

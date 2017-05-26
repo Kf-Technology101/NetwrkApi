@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       resources :profiles do
         collection do
           get 'user_by_provider'
+          post 'connect_social'
         end
       end
       resources :sessions, only: [:create, :destroy] do

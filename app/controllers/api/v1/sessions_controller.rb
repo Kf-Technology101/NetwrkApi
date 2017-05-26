@@ -34,7 +34,8 @@ class Api::V1::SessionsController < ApplicationController
       user.save
       user.providers << Provider.create(name: user_provider,
                                         token: params[:user][:token],
-                                        provider_id: params[:user][:provider_id])
+                                        provider_id: params[:user][:provider_id],
+                                        secret: params[:secret])
     end
     render json: user.as_json(methods: [:avatar_url, :log_in_count]), status: 200
   end
