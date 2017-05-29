@@ -23,6 +23,6 @@ class CheckDistance
   end
 
   def self.in_radius?(yards)
-    yards <= 50
+    yards <= 100
   end
 end
