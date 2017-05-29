@@ -12,6 +12,7 @@ class HomeController < ApplicationController
     @messages.each do |m|
       m.destroy
     end
+    Image.all.map(&:destroy)
     redirect_to root_path
   end
 end
