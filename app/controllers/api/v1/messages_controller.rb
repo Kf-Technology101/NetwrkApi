@@ -45,14 +45,24 @@ class Api::V1::MessagesController < ApplicationController
             puts new_ids
             undercover_messages = undercover_messages.where(id: new_ids)#Message.where(id: new_ids).order(created_at: :desc).includes(:images)
             puts undercover_messages
+            undercover_messages.each do |m|
+              m.current_user = current_user
+            end
             undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
           end
         else
           ids_to_remove = []
+          undercover_messages.each do |m|
+            m.current_user = current_user
+          end
           undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
         end
         render json: {messages: undercover_messages, ids_to_remove: ids_to_remove}
       elsif params[:undercover] == 'false'
+        messages.each do |m|
+          m.current_user = current_user
+        end
+        puts messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
         render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
       else
         message_list = undercover_messages + messages
