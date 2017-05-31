@@ -48,11 +48,11 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    ActionController::Base.helpers.asset_path(avatar.url(:medium))
+    'https:' + avatar.url(:medium) #ActionController::Base.helpers.asset_path(avatar.url(:medium))
   end
 
   def hero_avatar_url
-    hero_avatar.present? ? (ActionController::Base.helpers.asset_path(hero_avatar.url(:medium))) : role_image_url
+    hero_avatar.present? ? ('https:' + avatar.url(:medium)) : role_image_url
   end
 
   def able_to_post_legendary?
