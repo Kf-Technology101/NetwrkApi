@@ -24,7 +24,7 @@ class Message < ApplicationRecord
     urls = []
     images.each do |image|
       puts ActionController::Base.helpers.asset_path(image.image.url(:medium))
-      urls << ActionController::Base.helpers.asset_path(image.image.url(:medium))
+      urls << 'https:'+image.image.url(:medium) #ActionController::Base.helpers.asset_path(image.image.url(:medium))
     end
     urls
   end
