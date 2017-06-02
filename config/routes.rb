@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           post 'sms_sharing'
           get 'legendary_list'
           get 'profile_messages'
+          get 'block'
         end
       end
       resources :networks_users, only: [:index]

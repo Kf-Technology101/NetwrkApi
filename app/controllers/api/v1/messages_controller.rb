@@ -194,6 +194,16 @@ class Api::V1::MessagesController < ApplicationController
     end
   end
 
+  def block
+    message = Message.find_by(id: params[:message_id])
+    if message.present?
+      current_user.messages_deleted << message
+      head 204
+    else
+      head 422
+    end
+  end
+
   private
 
   def message_params
