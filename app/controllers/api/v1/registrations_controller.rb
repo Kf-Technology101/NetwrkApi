@@ -17,6 +17,7 @@ class Api::V1::RegistrationsController < ApplicationController
     resource.update(user_params)
     if resource.valid?
       resource.save
+      puts resource.as_json(methods: [:avatar_url, :hero_avatar_url, :log_in_count])
       render json: resource.as_json(methods: [:avatar_url, :hero_avatar_url, :log_in_count]), status: 200
     else
       render json: resource.errors.messages, status: 422

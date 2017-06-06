@@ -52,7 +52,7 @@ class User < ApplicationRecord
   end
 
   def hero_avatar_url
-    hero_avatar.present? ? ('https:' + avatar.url(:medium)) : role_image_url
+    hero_avatar.present? ? ('https:' + hero_avatar.url(:medium)) : role_image_url
   end
 
   def able_to_post_legendary?
