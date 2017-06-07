@@ -116,6 +116,7 @@ body {
   position: fixed;
   left: 0;
   right: 0;
+  z-index: 2;
   top: 15px;
   margin: auto;
   background: #fff;
