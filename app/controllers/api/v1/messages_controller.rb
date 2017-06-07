@@ -91,6 +91,11 @@ class Api::V1::MessagesController < ApplicationController
     end
   end
 
+  def social_feed
+    messages = Message.where(social: params[:social], user_id: current_user.id).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
+    render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+  end
+
   def create
     @message = Message.new(message_params)
     puts @message.valid?

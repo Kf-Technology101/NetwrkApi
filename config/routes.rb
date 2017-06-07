@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     collection do
       get 'privacy'
       get 'clear_messages'
+      post 'create_subscriber'
     end
   end
 
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
           get 'legendary_list'
           get 'profile_messages'
           get 'block'
+          post 'social_feed'
         end
       end
       resources :networks_users, only: [:index]

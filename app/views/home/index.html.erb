@@ -1,3 +1,13 @@
+<% if flash[:notice].present? %>
+  <%= flash[:notice] %>
+<% end %>
+
+<%= form_for @subscriber, url: create_subscriber_home_index_path, method: :post do |f| %>
+  <%= f.text_field :email %>
+  <%= f.text_field :description %>
+  <%= f.submit "Create" %>
+<% end %>
+
 <div class="container">
   <div class="logo">
     <div>
