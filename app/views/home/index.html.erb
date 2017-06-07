@@ -1,20 +1,20 @@
 <% if flash[:notice].present? %>
-  <%= flash[:notice] %>
-<% end %>
-
-<%= form_for @subscriber, url: create_subscriber_home_index_path, method: :post do |f| %>
-  <%= f.text_field :email %>
-  <%= f.text_field :description %>
-  <%= f.submit "Create" %>
+  <p class="notice">
+    <%= flash[:notice] %>
+  </p>
 <% end %>
 
 <div class="container">
-  <div class="logo">
-    <div>
-      <%=image_tag('logo.png')%>
-      <div class="link">
-        <a href="/privacy" >Privacy policy</a>
-      </div>
-    </div>
-  </div>
+  <%=image_tag('logo.svg', class: 'logo')%>
+
+  <%= form_for @subscriber, url: create_subscriber_home_index_path,
+    method: :post do |f| %>
+    <%= f.email_field :email, required: true, placeholder: "Email",
+    class: "field email"%>
+    <%= f.text_field :description, placeholder: "Description",
+    class: "field description" %>
+    <%= f.submit "Create", class: "submit" %>
+  <% end %>
+
+  <a href="/privacy" >Privacy policy</a>
 </div>
