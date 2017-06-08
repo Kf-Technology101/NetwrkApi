@@ -11,10 +11,9 @@
     method: :post do |f| %>
     <%= f.email_field :email, required: true, placeholder: "Email",
     class: "field email"%>
-    <%= f.text_field :description, placeholder: "Description",
+    <%= f.text_field :description, placeholder: "Tell me more",
     class: "field description" %>
-    <%= f.submit "Create", class: "submit" %>
+    <%= f.submit "Send", class: "submit" %>
   <% end %>
-
   <a href="/privacy" >Privacy policy</a>
 </div>
