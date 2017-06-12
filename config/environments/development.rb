@@ -27,7 +27,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  config.action_controller.asset_host = "http://192.168.1.13:3000"
+  # config.action_controller.asset_host = "http://192.168.1.13:3000"
   config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
   config.action_cable.disable_request_forgery_protection = true
   # Don't care if the mailer can't send.
