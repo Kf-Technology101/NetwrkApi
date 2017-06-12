@@ -58,7 +58,36 @@ class Api::V1::MessagesController < ApplicationController
         render json: {messages: message_list.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
       end
     else
-      head 204
+      messages = CheckDistance.messages_in_radius(params[:post_code],
+                                                  params[:lng],
+                                                  params[:lat],
+                                                  current_user.id,
+                                                  true)
+      undercover_messages = Message.where(id: messages.map(&:id)).uniq
+      ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
+      undercover_messages = undercover_messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
+      if params[:current_ids].present?
+        quered_ids = undercover_messages.pluck(:id)
+        if params[:current_ids].split(',').map(&:to_i) == (params[:current_ids].split(',').map(&:to_i) && quered_ids)
+          ids_to_remove = []
+          undercover_messages = []
+        else
+          ids_to_remove = params[:current_ids].split(',').map(&:to_i) - quered_ids
+          new_ids = quered_ids - params[:current_ids].split(',').map(&:to_i)
+          undercover_messages = undercover_messages.where(id: new_ids)#Message.where(id: new_ids).order(created_at: :desc).includes(:images)
+          undercover_messages.each do |m|
+            m.current_user = current_user
+          end
+          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+        end
+      else
+        ids_to_remove = []
+        undercover_messages.each do |m|
+          m.current_user = current_user
+        end
+        undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+      end
+      render json: {messages: undercover_messages}
     end
   end
 

@@ -9,8 +9,12 @@ class CheckDistance
     network = Network.find_by(post_code: post_code)
     if network.present?
       messages = network.messages
+      puts "HELLO"*100
+      puts messages.inspect
     else
       messages = Message.all
+      puts "HELLO ALL"*100
+      puts messages.inspect
     end
     messages.where(undercover: true).each do |message|
       next unless message.lat.to_s[0..4] == current_lat.to_s[0..4] && message.lng.to_s[0..4] == current_lng.to_s[0..4]
