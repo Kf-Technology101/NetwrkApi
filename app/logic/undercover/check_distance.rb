@@ -7,7 +7,12 @@ class CheckDistance
     messages_in_radius = []
     user = User.find_by(id: user_id)
     network = Network.find_by(post_code: post_code)
-    network.messages.where(undercover: true).each do |message|
+    if network.present?
+      messages = network.messages
+    else
+      messages = Message.all
+    end
+    messages.where(undercover: true).each do |message|
       next unless message.lat.to_s[0..4] == current_lat.to_s[0..4] && message.lng.to_s[0..4] == current_lng.to_s[0..4]
       distance = Geocoder::Calculations.distance_between([current_lng,current_lat], [message.lng,message.lat])
       message.current_user = user
