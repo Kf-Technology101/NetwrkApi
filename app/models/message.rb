@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  belongs_to :network, requred: false
+  belongs_to :network, required: false
   has_many :images
 
   has_many :user_likes
