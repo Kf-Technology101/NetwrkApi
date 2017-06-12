@@ -33,7 +33,8 @@ class FeedFetch
                                                            'message',
                                                            'full_picture',
                                                            'created_time',
-                                                           'privacy']})
+                                                           'privacy',
+                                                           'link']})
   end
 
   def self.save_message(message, user_id)
@@ -45,14 +46,16 @@ class FeedFetch
                                     user_id: user_id,
                                     social: 'facebook',
                                     created_at: message['created_time'],
-                                    undercover: false)
+                                    undercover: false,
+                                    url: message['link'])
       unless old_message.present?
         new_message = Message.create(text: message['message'],
                                       network_id: network.id,
                                       user_id: user_id,
                                       social: 'facebook',
                                       created_at: message['created_time'],
-                                      undercover: false)
+                                      undercover: false,
+                                      url: message['link'])
         if message['full_picture'].present?
           new_message.images << Image.create(image: URI.parse(message['full_picture']))
         end

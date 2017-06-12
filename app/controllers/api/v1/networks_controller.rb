@@ -17,6 +17,7 @@ class Api::V1::NetworksController < ApplicationController
   def create
     @network = Network.new(post_code: params[:post_code], users_count: 1)
     if @network.save
+      UserMailer.founder_mail(current_user.id).deliver_now
       @network.users << current_user
       render json: {network: @network, users: @network.users}, status: 200
     else

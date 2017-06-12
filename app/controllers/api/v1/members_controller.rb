@@ -7,6 +7,7 @@ class Api::V1::MembersController < ApplicationController
       NetworksUser.create(user_id: current_user.id,
                           network_id: network.id,
                           invitation_sent: true)
+      UserMailer.connect_mail(current_user.id).deliver_now
       network.update_attributes(users_count: network.users_count += 1)
       network.save
       if network.users_count == 10

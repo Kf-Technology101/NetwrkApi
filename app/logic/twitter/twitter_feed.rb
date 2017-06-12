@@ -13,6 +13,8 @@ class TwitterFeed
         config.access_token_secret = provider.secret#"TtxSuN1A7UnRJBWARFR6c9nEjcKoeiCYXYMrfTCKIPaEy"
       end
       feed = client.home_timeline
+      puts "TWITTER FEED " * 100
+      puts feed.inspect
       feed.each do |f|
         user.networks.each do |network|
           old_message = Message.find_by(text: f.text,

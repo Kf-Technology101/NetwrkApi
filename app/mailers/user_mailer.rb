@@ -16,4 +16,23 @@ class UserMailer < ApplicationMailer
     @code = code
     mail(to: @email, subject: 'Your confirmation code...')
   end
+
+  def legendary_mail(user_id)
+    @user = User.find_by(id: user_id)
+    @email = @user.email
+    mail(to: @email, subject: 'Your message became legendary...')
+  end
+
+  def founder_mail(user_id)
+    @user = User.find_by(id: user_id)
+    @email = @user.email
+    mail(to: @email, subject: 'Your are network founder...')
+  end
+
+  def connect_mail(user_id)
+    @user = User.find_by(id: user_id)
+    @email = @user.email
+    mail(to: @email, subject: 'Your are joined new network...')
+
+  end
 end

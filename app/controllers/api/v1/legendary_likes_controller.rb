@@ -15,6 +15,7 @@ class Api::V1::LegendaryLikesController < ApplicationController
           message.save
           current_user.update(legendary_at: DateTime.now)
           current_user.save
+          UserMailer.legendary_mail(message.user_id).deliver_now
           render json: message
         else
           head 422
