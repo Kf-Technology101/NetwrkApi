@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  belongs_to :network
+  belongs_to :network, numericality: {allow_blank: true}
   has_many :images
 
   has_many :user_likes
