@@ -16,6 +16,7 @@ class FeedFetch
     access_token = user.providers.where(name: 'fb').last.token
     puts access_token
     feed = get_feed(access_token)
+    puts 'FACEBOOK'*100
     puts feed.inspect
     feed.each do |message|
       puts message['privacy']['value']
@@ -34,7 +35,9 @@ class FeedFetch
                                                            'full_picture',
                                                            'created_time',
                                                            'privacy',
-                                                           'link']})
+                                                           'link',
+                                                           'place',
+                                                           'permalink_url']})
   end
 
   def self.save_message(message, user_id)
@@ -47,7 +50,8 @@ class FeedFetch
                                     social: 'facebook',
                                     created_at: message['created_time'],
                                     undercover: false,
-                                    url: message['link'])
+                                    url: message['link'],
+                                    post_permalink: message['permalink_url'])
       unless old_message.present?
         new_message = Message.create(text: message['message'],
                                       network_id: network.id,
@@ -55,7 +59,8 @@ class FeedFetch
                                       social: 'facebook',
                                       created_at: message['created_time'],
                                       undercover: false,
-                                      url: message['link'])
+                                      url: message['link'],
+                                      post_permalink: message['permalink_url'])
         if message['full_picture'].present?
           new_message.images << Image.create(image: URI.parse(message['full_picture']))
         end
