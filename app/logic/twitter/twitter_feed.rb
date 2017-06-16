@@ -12,24 +12,30 @@ class TwitterFeed
         config.access_token        = provider.token#"760065835520159745-isrRmAW1O0s92J2GTmkKlCojASehsWk"
         config.access_token_secret = provider.secret#"TtxSuN1A7UnRJBWARFR6c9nEjcKoeiCYXYMrfTCKIPaEy"
       end
+      puts client.inspect
       feed = client.home_timeline
       puts "TWITTER FEED " * 100
       puts feed.inspect
       feed.each do |f|
+        puts "FEED SOURCE"*100
+        puts f.url
+        link = f.url.to_s
         user.networks.each do |network|
           old_message = Message.find_by(text: f.text,
                                         network_id: network.id,
                                         user_id: user_id,
                                         social: 'twitter',
                                         created_at: f.created_at.to_date,
-                                        undercover: false)
+                                        undercover: false,
+                                        post_permalink: link)
           unless old_message.present?
             new_message = Message.create(text: f.text,
                                          network_id: network.id,
                                          user_id: user_id,
                                          social: 'twitter',
                                          created_at: f.created_at.to_date,
-                                         undercover: false)
+                                         undercover: false,
+                                         post_permalink: link)
           end
         end
       end
