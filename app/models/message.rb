@@ -29,6 +29,10 @@ class Message < ApplicationRecord
     urls
   end
 
+  def post_url
+    post_permalink.present? ? URI.decode(post_permalink) : ''
+  end
+
   def deleted_by_user?(user=nil)
     user ||= current_user
     users.include?(user)

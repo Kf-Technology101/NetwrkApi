@@ -36,14 +36,14 @@ class Api::V1::MessagesController < ApplicationController
             undercover_messages.each do |m|
               m.current_user = current_user
             end
-            undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+            undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])
           end
         else
           ids_to_remove = []
           undercover_messages.each do |m|
             m.current_user = current_user
           end
-          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])
         end
         render json: {messages: undercover_messages, ids_to_remove: ids_to_remove}
       elsif params[:undercover] == 'false'
@@ -52,10 +52,10 @@ class Api::V1::MessagesController < ApplicationController
         messages.each do |m|
           m.current_user = current_user
         end
-        render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+        render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
       else
         message_list = undercover_messages + messages
-        render json: {messages: message_list.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+        render json: {messages: message_list.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
       end
     else
       messages = CheckDistance.messages_in_radius(params[:post_code],
@@ -78,14 +78,14 @@ class Api::V1::MessagesController < ApplicationController
           undercover_messages.each do |m|
             m.current_user = current_user
           end
-          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])
         end
       else
         ids_to_remove = []
         undercover_messages.each do |m|
           m.current_user = current_user
         end
-        undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])
+        undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])
       end
       render json: {messages: undercover_messages}
     end
@@ -114,7 +114,7 @@ class Api::V1::MessagesController < ApplicationController
       else
         messages = network.messages.where(user_id: params[:user_id]).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
       end
-      render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+      render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
     else
       head 204
     end
@@ -122,7 +122,7 @@ class Api::V1::MessagesController < ApplicationController
 
   def social_feed
     messages = Message.where(social: params[:social], user_id: current_user.id).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
-    render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+    render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
   end
 
   def create
@@ -190,7 +190,7 @@ class Api::V1::MessagesController < ApplicationController
       message_ids = network.messages.pluck(:id)
       ids = LegendaryLike.where(message_id: message_ids).pluck(:message_id).uniq
       messages = Message.where(id: ids)
-      render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links])}
+      render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
     else
       head 204
     end
