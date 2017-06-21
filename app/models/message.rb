@@ -1,4 +1,5 @@
 class Message < ApplicationRecord
+  include ActionView::Helpers::DateHelper
   belongs_to :network, required: false
   has_many :images
 
@@ -83,5 +84,13 @@ class Message < ApplicationRecord
   def user
     u = User.find_by(id: user_id)
     u.as_json(methods: [:avatar_url, :hero_avatar_url], only: [:name, :role_name])
+  end
+
+  def expire_at
+    expire_date.present? ? distance_of_time_in_words(Time.now, expire_date) : ''
+  end
+
+  def has_expired
+    expire_date.present? && DateTime.now > expire_date
   end
 end
