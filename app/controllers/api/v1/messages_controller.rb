@@ -208,17 +208,31 @@ class Api::V1::MessagesController < ApplicationController
   end
 
   def delete
-    @messages = Message.where(network_id: params[:network_id])
+    messages = Message.where(user_id: current_user.id, undercover: true)
+    puts current_user.inspect
+    puts messages.inspect
     ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
-    @messages = @messages.where.not(id: ids_to_exclude)
-    if @messages
-      @messages.each do |m|
+    puts ids_to_exclude
+    messages_to_delete = messages.where.not(id: ids_to_exclude)
+    puts messages_to_delete.inspect
+    if messages_to_delete.present?
+      messages_to_delete.each do |m|
         current_user.messages_deleted << m
       end
       head 204
     else
       head 422
     end
+    # @messages = Message.where(network_id: params[:network_id])
+    # @messages = @messages.where.not(id: ids_to_exclude)
+    # if @messages
+    #   @messages.each do |m|
+    #     current_user.messages_deleted << m
+    #   end
+    #   head 204
+    # else
+    #   head 422
+    # end
   end
 
   def block
