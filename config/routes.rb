@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       resources :messages do
         collection do
           post 'lock'
+          get 'unlock'
           post 'delete'
           post 'sms_sharing'
           get 'legendary_list'

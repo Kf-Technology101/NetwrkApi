@@ -12,33 +12,42 @@ class TwitterFeed
         config.access_token        = provider.token#"760065835520159745-isrRmAW1O0s92J2GTmkKlCojASehsWk"
         config.access_token_secret = provider.secret#"TtxSuN1A7UnRJBWARFR6c9nEjcKoeiCYXYMrfTCKIPaEy"
       end
+      puts 'USER ID'*100
+      puts client.user.id
       puts client.inspect
       feed = client.home_timeline
       puts "TWITTER FEED " * 100
       puts feed.inspect
       feed.each do |f|
+        puts 'TWEET ID'*100
+        puts f.user.id
         puts "FEED SOURCE"*100
         puts f.url
         link = f.url.to_s
         user.networks.each do |network|
-          old_message = Message.find_by(text: f.text,
-                                        network_id: network.id,
-                                        user_id: user_id,
-                                        social: 'twitter',
-                                        created_at: f.created_at.to_date,
-                                        undercover: false,
-                                        post_permalink: link)
-          unless old_message.present?
-            new_message = Message.create(text: f.text,
-                                         network_id: network.id,
-                                         user_id: user_id,
-                                         social: 'twitter',
-                                         created_at: f.created_at.to_date,
-                                         undercover: false,
-                                         post_permalink: link)
+          puts "TRUE OR FALSE"
+          puts client.user.id == f.user.id
+          if client.user.id == f.user.id
+            old_message = Message.find_by(text: f.text,
+                                          network_id: network.id,
+                                          user_id: user_id,
+                                          social: 'twitter',
+                                          created_at: f.created_at.to_date,
+                                          undercover: false,
+                                          post_permalink: link)
+            unless old_message.present?
+              new_message = Message.create(text: f.text,
+                                           network_id: network.id,
+                                           user_id: user_id,
+                                           social: 'twitter',
+                                           created_at: f.created_at.to_date,
+                                           undercover: false,
+                                           post_permalink: link)
+            end
           end
         end
       end
     end
+  rescue
   end
 end

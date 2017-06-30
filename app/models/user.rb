@@ -19,6 +19,9 @@ class User < ApplicationRecord
   has_many :deleted_messages
   has_many :messages_deleted, through: :deleted_messages, class_name: 'Message'
 
+  has_many :locked_messages
+  has_many :messages_locked, through: :locked_messages, class_name: 'Message'
+
   has_many :user_likes
   has_many :liked_messages, through: :user_likes, class_name: 'Message'
 

@@ -1,0 +1,2 @@
+class LockedMessage < ApplicationRecord
+end

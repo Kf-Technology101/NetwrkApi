@@ -33,17 +33,29 @@ class Api::V1::MessagesController < ApplicationController
             ids_to_remove = params[:current_ids].split(',').map(&:to_i) - quered_ids
             new_ids = quered_ids - params[:current_ids].split(',').map(&:to_i)
             undercover_messages = undercover_messages.where(id: new_ids)#Message.where(id: new_ids).order(created_at: :desc).includes(:images)
+            undercover_messages.where(locked: true).each do |m|
+              locked = LockedMessage.find_by(user_id: current_user.id, message_id: m.id)
+              unless locked.present?
+                LockedMessage.create(user_id: current_user.id, message_id: m.id)
+              end
+            end
             undercover_messages.each do |m|
               m.current_user = current_user
             end
-            undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])
+            undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired, :locked_by_user])
           end
         else
           ids_to_remove = []
+          undercover_messages.where(locked: true).each do |m|
+            locked = LockedMessage.find_by(user_id: current_user.id, message_id: m.id)
+            unless locked.present?
+              LockedMessage.create(user_id: current_user.id, message_id: m.id)
+            end
+          end
           undercover_messages.each do |m|
             m.current_user = current_user
           end
-          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])
+          undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired, :locked_by_user])
         end
         render json: {messages: undercover_messages, ids_to_remove: ids_to_remove}
       elsif params[:undercover] == 'false'
@@ -85,6 +97,7 @@ class Api::V1::MessagesController < ApplicationController
         undercover_messages.each do |m|
           m.current_user = current_user
         end
+        puts undercover_messages.inspect
         undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])
       end
       render json: {messages: undercover_messages}
@@ -178,10 +191,15 @@ class Api::V1::MessagesController < ApplicationController
   def unlock
     @message = Message.find_by(id: params[:id])
     if @message && @message.correct_password(params[:password])
-      @message.update_attributes(locked: false,
-                                 password_salt: nil,
-                                 password_hash: nil)
-      @message.save
+      # @message.update_attributes(locked: false,
+      #                            password_salt: nil,
+      #                            password_hash: nil)
+      # @message.save
+      m = LockedMessage.find_by(message_id: @message.id, user_id: current_user.id)
+      if m.present?
+        m.unlocked = true
+        m.save
+      end
       render json: @message.as_json(methods: [:image_urls])
     else
       head 422
@@ -193,7 +211,9 @@ class Api::V1::MessagesController < ApplicationController
     if network.present?
       message_ids = network.messages.pluck(:id)
       ids = LegendaryLike.where(message_id: message_ids).pluck(:message_id).uniq
+      ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
       messages = Message.where(id: ids)
+      messages = messages.where.not(id: ids_to_exclude)
       render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url])}
     else
       head 204
@@ -208,7 +228,12 @@ class Api::V1::MessagesController < ApplicationController
   end
 
   def delete
-    messages = Message.where(user_id: current_user.id, undercover: true)
+    message_ids = CheckDistance.messages_in_radius(params[:post_code],
+                                                   params[:lng],
+                                                   params[:lat],
+                                                   current_user.id,
+                                                   true)
+    messages = Message.where(id: message_ids.map(&:id)).uniq
     puts current_user.inspect
     puts messages.inspect
     ids_to_exclude = current_user.messages_deleted.pluck(:message_id)

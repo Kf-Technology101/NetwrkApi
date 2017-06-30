@@ -6,6 +6,9 @@ class Message < ApplicationRecord
   has_many :user_likes
   has_many :liked_users, through: :user_likes, class_name: 'User'
 
+  has_many :locked_messages
+  has_many :locked_users, through: :locked_users, class_name: 'User'
+
   has_many :legendary_likes
   has_many :legendary_users, through: :legendary_likes, class_name: 'User'
 
@@ -47,6 +50,13 @@ class Message < ApplicationRecord
   def legendary_by_user(user=nil)
     user ||= current_user
     legendary_users.include?(user)
+  end
+
+  def locked_by_user(user=nil)
+    user ||= current_user
+    # locked_users.include?(user)
+    m = LockedMessage.find_by(message_id: self.id, user_id: user.id)
+    m.present? && m.unlocked != true
   end
 
   def save_password(password)
