@@ -190,7 +190,9 @@ class Api::V1::MessagesController < ApplicationController
 
   def unlock
     @message = Message.find_by(id: params[:id])
-    if @message && @message.correct_password(params[:password])
+    puts @message.present?
+    puts @message.correct_password?(params[:password])
+    if @message.present? && @message.correct_password?(params[:password])
       # @message.update_attributes(locked: false,
       #                            password_salt: nil,
       #                            password_hash: nil)
