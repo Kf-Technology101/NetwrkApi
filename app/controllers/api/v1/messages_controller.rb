@@ -159,9 +159,10 @@ class Api::V1::MessagesController < ApplicationController
         @message.update_attributes(hint: params[:message][:hint], locked: true)
         @message.save_password(params[:message][:password])
       end
-      ActionCable.server.broadcast "messages#{params[:post_code]}chat", message: @message.as_json(methods: [:image_urls, :user, :text_with_links, :expire_at, :has_expired])
+      @message.current_user = current_user
+      ActionCable.server.broadcast "messages#{params[:post_code]}chat", message: @message.as_json(methods: [:image_urls, :user, :text_with_links, :expire_at, :has_expired, :locked_by_user])
       # head 204
-      render json: @message.as_json(methods: [:image_urls, :user, :text_with_links])
+      render json: @message.as_json(methods: [:image_urls, :user, :text_with_links, :locked_by_user])
     else
       head 422
     end

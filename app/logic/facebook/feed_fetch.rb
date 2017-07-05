@@ -44,16 +44,8 @@ class FeedFetch
     user = User.find_by(id: user_id)
     puts 'created new_message'
     user.networks.each do |network|
-      old_message = Message.find_by(text: message['message'],
-                                    network_id: network.id,
-                                    user_id: user_id,
-                                    social: 'facebook',
-                                    created_at: message['created_time'],
-                                    undercover: false,
-                                    url: message['link'],
-                                    post_permalink: message['permalink_url'])
-      unless old_message.present?
-        new_message = Message.create(text: message['message'],
+      if message['message'].present? && message['full_picture'].present?
+        old_message = Message.find_by(text: message['message'],
                                       network_id: network.id,
                                       user_id: user_id,
                                       social: 'facebook',
@@ -61,8 +53,18 @@ class FeedFetch
                                       undercover: false,
                                       url: message['link'],
                                       post_permalink: message['permalink_url'])
-        if message['full_picture'].present?
-          new_message.images << Image.create(image: URI.parse(message['full_picture']))
+        unless old_message.present?
+          new_message = Message.create(text: message['message'],
+                                        network_id: network.id,
+                                        user_id: user_id,
+                                        social: 'facebook',
+                                        created_at: message['created_time'],
+                                        undercover: false,
+                                        url: message['link'],
+                                        post_permalink: message['permalink_url'])
+          if message['full_picture'].present?
+            new_message.images << Image.create(image: URI.parse(message['full_picture']))
+          end
         end
       end
     end

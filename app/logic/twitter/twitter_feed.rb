@@ -23,6 +23,7 @@ class TwitterFeed
         puts f.user.id
         puts "FEED SOURCE"*100
         puts f.url
+        puts f.url.to_s
         link = f.url.to_s
         user.networks.each do |network|
           puts "TRUE OR FALSE"
