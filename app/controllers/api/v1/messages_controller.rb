@@ -25,7 +25,7 @@ class Api::V1::MessagesController < ApplicationController
       end
       if params[:undercover] == 'true'
         if params[:current_ids].present?
-          quered_ids = undercover_messages.pluck(:id)
+          # quered_ids = undercover_messages.present? ? undercover_messages.pluck(:id) : []
           if params[:current_ids].split(',').map(&:to_i) == (params[:current_ids].split(',').map(&:to_i) && quered_ids)
             ids_to_remove = []
             undercover_messages = []
@@ -97,7 +97,6 @@ class Api::V1::MessagesController < ApplicationController
         undercover_messages.each do |m|
           m.current_user = current_user
         end
-        puts undercover_messages.inspect
         undercover_messages = undercover_messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])
       end
       render json: {messages: undercover_messages}
@@ -123,10 +122,14 @@ class Api::V1::MessagesController < ApplicationController
           puts messages.count
         end
         ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
-        messages = messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
+        undercover_messages = messages.where.not(id: ids_to_exclude).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
+        messages = undercover_messages + Message.where(social: params[:social], user_id: current_user.id).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
       else
         messages = network.messages.where(user_id: params[:user_id]).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
       end
+      render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])}
+    elsif params[:public] == 'true'
+      messages = Message.where(social: ['facebook', 'twitter'], user_id: current_user.id).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
       render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])}
     else
       head 204
@@ -134,6 +137,8 @@ class Api::V1::MessagesController < ApplicationController
   end
 
   def social_feed
+    FeedFetch.user_fetch(current_user.id)
+    TwitterFeed.perform(current_user.id)
     messages = Message.where(social: params[:social], user_id: current_user.id).order(created_at: :desc).limit(params[:limit]).offset(params[:offset]).includes(:images)
     render json: {messages: messages.as_json(methods: [:image_urls, :like_by_user, :legendary_by_user, :user, :text_with_links, :post_url, :expire_at, :has_expired])}
   end
@@ -231,20 +236,29 @@ class Api::V1::MessagesController < ApplicationController
   end
 
   def delete
-    message_ids = CheckDistance.messages_in_radius(params[:post_code],
-                                                   params[:lng],
-                                                   params[:lat],
-                                                   current_user.id,
-                                                   true)
-    messages = Message.where(id: message_ids.map(&:id)).uniq
-    puts current_user.inspect
-    puts messages.inspect
-    ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
-    puts ids_to_exclude
-    messages_to_delete = messages.where.not(id: ids_to_exclude)
-    puts messages_to_delete.inspect
-    if messages_to_delete.present?
-      messages_to_delete.each do |m|
+      # message_ids = CheckDistance.messages_in_radius(params[:post_code],
+      #                                                params[:lng],
+      #                                                params[:lat],
+      #                                                current_user.id,
+      #                                                true)
+      # messages = Message.where(id: message_ids.map(&:id)).uniq
+      # puts current_user.inspect
+      # puts messages.inspect
+      # ids_to_exclude = current_user.messages_deleted.pluck(:message_id)
+      # puts ids_to_exclude
+      # messages_to_delete = messages.where.not(id: ids_to_exclude)
+      # puts messages_to_delete.inspect
+      # if messages_to_delete.present?
+      #   messages_to_delete.each do |m|
+      #     current_user.messages_deleted << m
+      #   end
+      #   head 204
+      # else
+      #   head 422
+      # end
+    @messages = Message.where(id: params[:ids])
+    if @messages
+      @messages.each do |m|
         current_user.messages_deleted << m
       end
       head 204

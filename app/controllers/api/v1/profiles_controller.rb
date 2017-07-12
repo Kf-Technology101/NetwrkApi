@@ -24,9 +24,9 @@ class Api::V1::ProfilesController < ApplicationController
     providers = current_user.providers
     provider = providers.where(name: params[:user][:provider_name]).first
     if provider.present?
-      provider.update_attributes(token: params[:user][:token],
-                                 provider_id: params[:user][:provider_id],
-                                 secret: params[:user][:secret])
+      provider.update(token: params[:user][:token],
+                      provider_id: params[:user][:provider_id],
+                      secret: params[:user][:secret])
       provider.save
     else
       current_user.providers << Provider.create(name: params[:user][:provider_name],
