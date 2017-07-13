@@ -34,16 +34,18 @@ class TwitterFeed
                                           user_id: user_id,
                                           social: 'twitter',
                                           created_at: f.created_at.to_date,
-                                          undercover: false,
-                                          post_permalink: link)
+                                          undercover: false)
+                                          # post_permalink: link)
             unless old_message.present?
-              new_message = Message.create(text: f.text,
-                                           network_id: network.id,
-                                           user_id: user_id,
-                                           social: 'twitter',
-                                           created_at: f.created_at.to_date,
-                                           undercover: false,
-                                           post_permalink: link)
+              if f.text.present?
+                new_message = Message.create(text: f.text,
+                                             network_id: network.id,
+                                             user_id: user_id,
+                                             social: 'twitter',
+                                             created_at: f.created_at.to_date,
+                                             undercover: false,
+                                             post_permalink: link)
+              end
             end
           end
         end
