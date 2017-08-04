@@ -69,4 +69,8 @@ class User < ApplicationRecord
   def log_in_count
     sign_in_count
   end
+
+  def disabled_hero?
+    points_count <= -200
+  end
 end

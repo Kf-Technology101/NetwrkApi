@@ -49,6 +49,7 @@ class Api::V1::RegistrationsController < ApplicationController
                                  :role_description,
                                  :role_image_url,
                                  :hero_avatar,
-                                 :gender)
+                                 :gender,
+                                 :points_count)
   end
 end
