@@ -79,3 +79,4 @@ gem 'newrelic_rpm'
 gem 'instagram',  :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem 'capistrano-rails-console', require: false
 gem 'aws-sdk'
+gem "twitter-bootstrap-rails"
