@@ -3,17 +3,56 @@
     <%= flash[:notice] %>
   </p>
 <% end %>
+<div class="modal fade" id="modal-contact">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <%= form_for @subscriber, url: create_subscriber_home_index_path,
+            method: :post do |f| %>
+            <%= f.email_field :email, required: true, placeholder: "Email",
+            class: "field email"%>
+            <%= f.text_field :description, placeholder: "Tell me more",
+            class: "field description" %>
+            <%= f.submit "Send", class: "submit" %>
+          <% end %>
+          <a href="/privacy">Privacy policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="container">
-  <%=image_tag('logo.svg', class: 'logo')%>
 
-  <%= form_for @subscriber, url: create_subscriber_home_index_path,
-    method: :post do |f| %>
-    <%= f.email_field :email, required: true, placeholder: "Email",
-    class: "field email"%>
-    <%= f.text_field :description, placeholder: "Tell me more",
-    class: "field description" %>
-    <%= f.submit "Send", class: "submit" %>
-  <% end %>
-  <a href="/privacy" >Privacy policy</a>
+<div class="row main-row">
+  <a href="#" class="left top-link">Download app</a>
+  <a href="#" class="run_contactModal right top-link">Contact us</a>
+
+  <div class="col-lg-2 col-md-2 col-sm-1 col-xs-12 left col"></div>
+  <div class="col-lg-8 col-md-8 col-sm-10 col-xs-12 center col">
+    <div class="center-container">
+      <p>Netwrk stories</p>
+      <button type="button" name="stories"></button>
+    </div>
+    <div id="stories">
+      <%= form_for @subscriber, url: create_subscriber_home_index_path,
+        method: :post do |f| %>
+        <%= f.email_field :email, required: true, placeholder: "Email to subscribe",
+        class: "field email"%>
+        <%= f.submit "SEND", class: "submit" %>
+      <% end %>
+      <h3>Some header</h3>
+      <div class="stories-list">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-1 col-xs-12 right col"></div>
 </div>

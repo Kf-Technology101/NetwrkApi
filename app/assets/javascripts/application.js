@@ -12,5 +12,27 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+
+function toggleContainer(container) {
+  if (container) {
+    if (container.is(':visible')) container.stop().fadeOut('fast');
+    else container.stop().fadeIn('fast');
+  } else console.error('No container provided to toggle');
+}
+
+$(document).ready(function() {
+  var storiesEl = $('#stories');
+  $('button[name="stories"]').on('click', function(){
+    toggleContainer(storiesEl);
+  });
+  $('.run_contactModal').on('click', function(ev){
+    ev.preventDefault();
+    setTimeout(function() {
+      $('#modal-contact').modal();
+    }, 1);
+
+  });
+});
