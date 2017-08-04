@@ -5,7 +5,7 @@ class ChooseType
       UserMailer.confirmation_mail(login, code).deliver_now
       type = {
         login_type: 'email',
-        login_message: 'Confirmation email is already sent',
+        login_message: 'Confirmation email is sent',
         login_code: code
       }
       # TODO email sending
@@ -13,7 +13,7 @@ class ChooseType
       TwilioConnect.perform(login, code)
       type = {
         login_type: 'phone',
-        login_message: 'Confirmation SMS is already sent',
+        login_message: 'Confirmation SMS is sent',
         login_code: code
       }
       # TODO sms sending

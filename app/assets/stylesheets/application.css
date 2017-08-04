@@ -53,22 +53,18 @@ input[type="submit"] {
 html,
 body {
   height: 100%;
-  /*width: 100%;*/
   min-height: 415px;
+  background: url('../images/website-bg.png') no-repeat center,
+              url('../images/waves.gif');
+  background-size: cover, 120px;
 }
 
-.container {
-  /*position: absolute;*/
+.modal-body .container {
   width: 100%;
   height: 100%;
-  /*top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  */
   margin: auto;
-  max-width: 400px;
   padding: 0 15px;
+  max-width: 400px;
   box-sizing: border-box;
   text-align: center;
   display: flex;
@@ -139,4 +135,126 @@ body {
   -o-animation-fill-mode: forwards;
   -moz-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
+}
+
+/*################################################*/
+
+.main-row {
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.col.left a{
+  float: left;
+}
+.col a,
+.col p {
+  font-weight: bold;
+  color: #5b87aa;
+  font-size: 18px;
+}
+.col.center .center-container {
+  margin: 0 auto;
+  max-width: 200px;
+  width: 100%;
+  text-align: center;
+  color: #5b87aa;
+}
+.col.center .center-container button {
+  border: 5px solid #5b87aa;
+  border-radius: 11px;
+  background: transparent;
+  width: 68px;
+  height: 110px;
+  padding: 0;
+  outline: none;
+}
+
+.col.right a{
+  float: right;
+}
+
+#stories {
+  display: none;
+  width: 100%;
+  border: 5px solid #5b87aa;
+  border-radius: 15px;
+  background: #fff;
+  margin: 0 auto;
+  margin-top: 26px;
+  padding: 10px 30px;
+}
+#stories p {
+  font-size: 14px;
+  color: #000;
+  font-weight: normal;
+  margin-top: 10px;
+}
+#stories form {
+  width: 100%;
+  max-width: 400px;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+  height: 44px;
+}
+#stories form input[type="email"] {
+  border: 4px solid #5b87aa;
+  border-radius: 24px;
+  outline: none;
+  height: 44px;
+  width: 100%;
+  max-width: 400px;
+  padding-left: 10px;
+  float: left;
+  text-align: center;
+}
+#stories form input[type="submit"] {
+  background: #5b87aa;
+  border: none;
+  border-radius: 24px;
+  height: 44px;
+  padding: 0 10px;
+  color: #fff;
+  position: absolute;
+  right: 0;
+}
+
+#modal-contact .modal-header {
+  border-bottom: 0;
+}
+
+.top-link {
+  position: absolute;
+  top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #5b87aa;
+}
+.top-link.left {
+  left: 15px;
+}
+.top-link.right {
+  right: 15px;
+}
+
+@media screen and (max-width: 425px) {
+  .main-row {
+    padding-top: 10px;
+  }
+  .top-link {
+    position: relative;
+    height: 44px;
+    text-align: center;
+    left: 0!important;
+    top: auto;
+    width: 100%;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #stories form input[type="email"] {
+    text-align: left;
+  }
 }
