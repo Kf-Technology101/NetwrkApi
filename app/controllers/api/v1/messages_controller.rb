@@ -25,7 +25,7 @@ class Api::V1::MessagesController < ApplicationController
       end
       if params[:undercover] == 'true'
         if params[:current_ids].present?
-          # quered_ids = undercover_messages.present? ? undercover_messages.pluck(:id) : []
+          quered_ids = undercover_messages.present? ? undercover_messages.pluck(:id) : []
           if params[:current_ids].split(',').map(&:to_i) == (params[:current_ids].split(',').map(&:to_i) && quered_ids)
             ids_to_remove = []
             undercover_messages = []
