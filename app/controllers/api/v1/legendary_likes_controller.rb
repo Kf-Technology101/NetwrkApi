@@ -26,6 +26,10 @@ class Api::V1::LegendaryLikesController < ApplicationController
     end
   end
 
+  def index
+    render json: {able_to_post_legendary: current_user.able_to_post_legendary?}
+  end
+
   private
 
   def like_params

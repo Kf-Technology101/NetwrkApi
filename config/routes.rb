@@ -41,6 +41,8 @@ Rails.application.routes.draw do
         collection do
           get 'user_by_provider'
           post 'connect_social'
+          post 'change_points_count'
+          get 'disabled_hero'
         end
       end
       resources :sessions, only: [:create, :destroy] do
@@ -50,7 +52,7 @@ Rails.application.routes.draw do
         end
       end
       resources :user_likes, only: [:create]
-      resources :legendary_likes, only: [:create]
+      resources :legendary_likes, only: [:create, :index]
       resources :invitations, only: [:create]
       resources :contacts, only: [:create]
       get '/sms', to: 'invitations#sms'

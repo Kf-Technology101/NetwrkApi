@@ -36,4 +36,15 @@ class Api::V1::ProfilesController < ApplicationController
     end
     head 204
   end
+
+  def change_points_count
+    user = User.find_by(id: params[:user_id])
+    user.points_count += params[:points].to_i
+    user.save
+    render json: user
+  end
+
+  def disabled_hero
+    render json: {disabled: current_user.disabled_hero?}
+  end
 end
